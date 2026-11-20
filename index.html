@@ -60,7 +60,6 @@
   .exq .look{color:var(--ink-faint);font-size:12px;grid-column:1}
   .exq .ans{grid-row:1/span 2;grid-column:2;align-self:center;text-align:right}
   .exq .ans b{display:inline-block;min-width:34px;text-align:center;background:var(--accent);color:#08222a;border-radius:5px;padding:1px 6px}
-  .exq .ans.sv b{background:var(--sev);color:#1d0f29}
   .exq .ans i{display:block;font-style:normal;color:var(--ink-dim);font-size:11.5px;margin-top:2px}
   .exq h4{margin:8px 0 2px;font-size:12px;color:var(--ink-faint);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
   .fine{color:var(--ink-faint);font-size:12.5px;margin-top:14px}
@@ -73,18 +72,20 @@
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
   .chip{font-size:12.5px;color:var(--ink-dim);border:1px solid var(--line2);border-radius:14px;padding:2px 10px;white-space:nowrap}
   .chip i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}
-  .stage{display:grid;grid-template-columns:minmax(0,1fr) 470px;gap:14px;height:calc(100vh - var(--hdr) - 3px - 24px - var(--deschh, 56px))}
-  .viewer{display:flex;flex-direction:column;min-height:0}
-  .tabs{display:flex;gap:6px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
-  .tabs button{background:#0e141d;border:1px solid var(--line2);border-radius:var(--r);padding:4px 12px;font-size:13px;color:var(--ink-dim)}
-  .tabs button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#08222a;font-weight:600}
-  .tabs .legend{margin-left:auto;display:flex;gap:10px;font-size:12px;color:var(--ink-faint);flex-wrap:wrap}
-  .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}
-  .imgwrap{flex:1;min-height:0;display:flex;justify-content:center;align-items:flex-start;background:#000;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-  .imgwrap img{height:100%;max-width:100%;object-fit:contain;cursor:zoom-in;display:block}
-  .nomask{align-self:center;color:var(--ink-faint);font-size:14px}
+  .stage{display:grid;grid-template-columns:auto minmax(380px,1fr);gap:14px;align-items:start}
+  .imgs{display:grid;grid-template-columns:var(--big,560px) var(--small,280px);grid-template-rows:var(--small,280px) var(--small,280px);gap:8px}
+  .imgs figure{margin:0;position:relative;background:#000;border:2px solid var(--line);border-radius:8px;overflow:hidden}
+  .imgs figure.big{grid-row:1/span 2}
+  .imgs figure.on{border-color:var(--accent)}
+  .imgs img{display:block;width:100%;height:100%;object-fit:contain;cursor:zoom-in}
+  .imgs .cap{position:absolute;left:0;right:0;top:0;padding:5px 9px;font-size:12px;color:#dfe7ef;
+    background:linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,0));display:flex;gap:10px;flex-wrap:wrap;align-items:center;pointer-events:none}
+  .imgs .cap b{font-weight:600;margin-right:2px}
+  .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}
+  .nomask{display:flex;align-items:center;justify-content:center;height:100%;color:var(--ink-faint);font-size:13px}
 
-  .qs{overflow:auto;min-height:0;padding-right:4px;display:flex;flex-direction:column}
+  .qs{overflow:auto;padding-right:4px;display:flex;flex-direction:column;height:var(--qh,auto)}
+  .scalehd{font-size:11.5px;color:var(--ink-faint);margin-bottom:6px}
   .grp{font-size:12px;color:var(--ink-faint);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin:10px 0 2px;
     display:flex;align-items:center;gap:7px}
   .grp:first-child{margin-top:0}
@@ -96,15 +97,12 @@
   .q.dim{opacity:.55}
   .q h3{margin:0;font-size:13px;font-weight:600;line-height:1.25}
   .q h3 small{display:block;font-weight:400;color:var(--ink-faint);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .q.sev h3 small{color:var(--sev)}
   .scale{display:flex;gap:4px}
   .scale button{flex:1;background:#0e141d;border:1px solid var(--line2);border-radius:var(--r);padding:4px 0;font-size:13px;
     font-weight:600;color:var(--ink-dim)}
   .scale button:hover{border-color:var(--accent);color:var(--ink)}
   .scale button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#08222a}
   .scale button.na{flex:.8;font-weight:500;font-size:12px}
-  .q.sev .scale button[aria-pressed=true]{background:var(--sev);border-color:var(--sev);color:#1d0f29}
-  .q.sev .scale button.mid{border-color:#5d4c6e}
   .anc{grid-column:2;font-size:11.5px;color:var(--ink-faint);margin-top:3px;display:none;justify-content:space-between;gap:8px}
   .anc span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .q.active .anc{display:flex}
@@ -127,8 +125,8 @@
   #zoom img{max-width:96vw;max-height:94vh}
   #zoom .lab{position:fixed;top:12px;left:16px;color:var(--ink-dim);font-size:13px}
   @media (max-width:1000px){
-    .stage{grid-template-columns:1fr;height:auto}
-    .imgwrap img{height:auto;width:100%}
+    .stage{grid-template-columns:1fr}
+    .qs{height:auto}
     .ex{grid-template-columns:1fr}
     header{padding:0 12px;gap:8px}
     main{padding:12px}
@@ -155,50 +153,48 @@
 /* Apps Script web app /exec URL (see apps_script.gs). Leave empty to run offline (results stay in this browser). */
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbz4mgpPgJCGtq26rct2qnzCbzl70wMI38Q0kj7dUucqheGn3TNthhkSdMA9NXVFmrv47g/exec";
 
-const SCALE = [-2, -1, 0, 1, 2];
-const fmt = v => v === "NA" ? "N/A" : (v > 0 ? "+" + v : String(v));
+const SCALE = [1, 2, 3, 4, 5];                 // every question: 5 = best / most consistent
+const fmt = v => v === "NA" ? "N/A" : String(v);
 
-/* view: which image the question is about (the viewer switches to it when the question is active) */
+/* view = the image the question is about (that panel is highlighted while the question is active) */
 const IMG_Q = [
-  { key:"realism", title:"Real X-ray?", view:"img",
-    ask:"Is the radiograph itself a real chest X-ray? Judge the image, not the overlays.",
+  { key:"realism", title:"Realistic?", view:"img",
+    ask:"Does the radiograph itself look like a real chest X-ray? Judge the image, not the overlays.",
     anchors:["Definitely synthetic","Probably synthetic","Cannot tell","Probably real","Definitely real"] },
   { key:"anatomy", title:"Anatomy overlay fits?", view:"anat",
-    ask:"Do the anatomy overlays (lungs, heart, mediastinum contours; ribs shaded) follow the structures on this radiograph?",
-    anchors:["Grossly wrong: does not follow the anatomy","Clearly off in several places","Roughly right, with obvious local errors",
-             "Accurate, minor deviations","Accurate everywhere"] },
+    ask:"Do the anatomy overlays (lung, heart, mediastinum contours; ribs shaded) follow the structures on the radiograph?",
+    anchors:["Grossly wrong","Clearly off in several places","Roughly right, obvious local errors","Accurate, minor deviations","Accurate everywhere"] },
 ];
-const NORMAL_Q = { key:"abnormal", title:"Any abnormality visible?", view:"img",
-  ask:"The description says this radiograph is normal. Is any abnormality visible?",
-  anchors:["Definitely no abnormality","Probably no abnormality","Equivocal","Probably abnormal","Definitely abnormal"] };
+/* normal cases only; stored in the "abnormal" column, but 5 = definitely normal (= consistent with the description) */
+const NORMAL_Q = { key:"abnormal", title:"Normal, as described?", view:"img",
+  ask:"The description says this radiograph is normal. Is it free of abnormality?",
+  anchors:["Definitely abnormal","Probably abnormal","Equivocal","Probably normal","Definitely normal"] };
 const F_Q = [
   { key:"vis", title:"Visible?", view:"img",
     ask:f => `Is ${f.name.toLowerCase()} visible on the radiograph?`,
-    anchors:["Definitely not visible","Probably not visible","Equivocal","Probably visible","Clearly visible"] },
-  { key:"loc", title:"Location as described?", na:true, view:"img",
+    anchors:["Not visible","Probably not visible","Equivocal","Probably visible","Clearly visible"] },
+  { key:"loc", title:"Location matches?", na:true, view:"img",
     ask:f => `Is it where the description says (${f.location || "—"})?`,
-    anchors:["Wrong side or wrong region","Right side, clearly wrong zone","Overlaps the stated location, centred elsewhere",
-             "In the stated location, small deviation","Exactly as described"] },
-  { key:"sev", title:"Severity vs. description", na:true, sev:true, view:"img",
-    ask:f => `Compared with the description (“${f.modifier || "—"}”), the finding on the image is…`,
-    anchors:["Much milder / smaller","Milder / smaller","As described","More severe / larger","Much more severe / larger"] },
-  { key:"mask", title:"Mask fits the finding?", view:"lesion",
+    anchors:["Wrong side or region","Right side, wrong zone","Overlaps, centred elsewhere","Small deviation","Exactly as described"] },
+  { key:"sev", title:"Severity matches?", na:true, view:"img",
+    ask:f => `Does its severity / extent match the description (“${f.modifier || "—"}”)?`,
+    anchors:["Very different","Clearly different","Somewhat different","Close","Exactly as described"] },
+  { key:"mask", title:"Mask fits?", view:"lesion",
     ask:f => `Does the coloured mask match the visible ${f.name.toLowerCase()}?`,
-    anchors:["No visible abnormality under the mask, or completely misplaced","Overlaps only a small part of it",
-             "Roughly right but clearly too large, too small or shifted","Good match, minor boundary errors","Matches the visible finding exactly"] },
+    anchors:["Misplaced / nothing under it","Covers a small part","Roughly right, clearly off in size or position","Good, minor boundary errors","Exact"] },
 ];
 
 const SHEET_COLS = ["evaluator_id","evaluator_name","sample_id","n_findings","prompt","realism","anatomy","abnormal",
   "f1_name","f1_vis","f1_loc","f1_sev","f1_mask","f2_name","f2_vis","f2_loc","f2_sev","f2_mask",
   "flag","note","time_spent_sec","review_started_at","review_submitted_at","updated_at"];
 
-const LS = k => "imgeval_v1_" + k;
+const LS = k => "imgeval_v2_" + k;          // v2: 1-5 scale (v1 used -2..+2)
 const iso = () => new Date().toISOString();
 const ANAT_LEGEND = `<span><i style="background:#50c8ff"></i>Lungs</span><span><i style="background:#ff6ec8"></i>Heart</span>
   <span><i style="background:#ffd75a"></i>Mediastinum</span><span><i style="background:#beffa0"></i>Ribs</span>`;
 
 /* ============================================================ state */
-let ITEMS = [], BY_UID = {}, ORDER = [], cur = 0, res = {}, focus = 0, QLIST = [], view = "img", viewPinned = false;
+let ITEMS = [], BY_UID = {}, ORDER = [], cur = 0, res = {}, focus = 0, QLIST = [];
 let evaluatorName = "", evaluatorId = "";
 let outbox = [], sending = false, sendTimer = null, lastOk = null, lastErr = "", tPanel = 0;
 const normId = n => n.trim().toLowerCase().replace(/\s+/g, " ");
@@ -354,39 +350,38 @@ function rubricHTML(){
   const tbl = (d, sev) => `<table class="${sev ? "sev" : ""}"><tbody>${d.anchors.map((a,i) =>
     `<tr><td>${fmt(SCALE[i])}</td><td>${a}</td></tr>`).join("")}</tbody></table>`;
   const ask = d => typeof d.ask === "function" ? d.ask({ name:"the finding", location:"…", modifier:"…" }) : d.ask;
-  return `<h1 style="font-size:20px">Scoring guide</h1>
+  return `<h1 style="font-size:20px">Scoring guide</h1><p>Every question: 1 = worst, 5 = best / most consistent.</p>
     <h2>Whole image</h2>
     ${IMG_Q.map(d => `<h3>${d.title}</h3><p>${ask(d)}</p>${tbl(d)}`).join("")}
     <h3>${NORMAL_Q.title} <span style="font-weight:400;color:#8fa1b5">(normal cases only)</span></h3><p>${NORMAL_Q.ask}</p>${tbl(NORMAL_Q)}
     <h2>Each finding of the description</h2>
-    ${F_Q.map(d => `<h3>${d.title}</h3><p>${ask(d)}${d.sev
-      ? " <b>The only question where 0 is best</b>: negative = milder than described, positive = more severe." : ""}
-      ${d.na ? " Skipped when the description gives no " + (d.key === "loc" ? "location" : "severity") + "; N/A when the finding is not visible." : ""}</p>${tbl(d, d.sev)}`).join("")}`;
+    ${F_Q.map(d => `<h3>${d.title}</h3><p>${ask(d)}
+      ${d.na ? " Skipped when the description gives no " + (d.key === "loc" ? "location" : "severity") + "; N/A when the finding is not visible." : ""}</p>${tbl(d)}`).join("")}`;
 }
 
 /* worked example: a real ChestX-Det case that is not one of the study cases */
 const EXAMPLE = {
-  prompt:"moderate left basal pleural effusion", color:"#ff7828",
+  prompt:"moderate left basal pleural effusion",
   rows:[
     { grp:"Whole image" },
-    { lab:"Real X-ray?", look:"Radiograph only — ignore the overlays", v:"+1", why:"Probably real" },
-    { lab:"Anatomy overlay fits?", look:"Anatomy image", v:"+1", why:"Accurate, minor deviations" },
+    { lab:"Realistic?", look:"Radiograph — judge the image, not the overlays", v:4, why:"Probably real" },
+    { lab:"Anatomy overlay fits?", look:"Anatomy panel", v:4, why:"Accurate, minor deviations" },
     { grp:"Effusion · moderate · left basal" },
-    { lab:"Visible?", look:"Radiograph", v:"+2", why:"Clearly visible" },
-    { lab:"Location as described?", look:"Left basal?", v:"+2", why:"Exactly as described" },
-    { lab:"Severity vs. description", look:"0 = as described, − milder, + more severe", v:"0", why:"As described", sev:true },
-    { lab:"Mask fits the finding?", look:"Findings image", v:"+1", why:"Good match, minor boundary errors" },
+    { lab:"Visible?", look:"Radiograph", v:5, why:"Clearly visible" },
+    { lab:"Location matches?", look:"Left basal?", v:5, why:"Exactly as described" },
+    { lab:"Severity matches?", look:"Moderate?", v:5, why:"Exactly as described" },
+    { lab:"Mask fits?", look:"Findings panel", v:4, why:"Good, minor boundary errors" },
   ]};
 
 function screenStart(){
   const ex = EXAMPLE.rows.map(r => r.grp ? `<h4>${r.grp}</h4>` :
-    `<div class="row"><span class="lab">${r.lab}</span><span class="ans ${r.sev ? "sv" : ""}"><b>${r.v}</b><i>${r.why}</i></span>
+    `<div class="row"><span class="lab">${r.lab}</span><span class="ans"><b>${r.v}</b><i>${r.why}</i></span>
       <span class="look">${r.look}</span></div>`).join("");
   document.getElementById("main").innerHTML = `
   <div class="card">
     <h1>Rate ${ITEMS.length} chest radiographs</h1>
-    <p class="lede">Each case gives a text description and a radiograph with two overlays. Answer a few questions on a −2 … +2 scale (about 30 s per case).
-      Some images and masks are real, some are generated by a model; they are mixed and shuffled.</p>
+    <p class="lede">Each case shows a text description, the radiograph, and two overlays. Score each question from <b>1</b> (worst) to <b>5</b>
+      (best / most consistent) — about 30 s per case. Some images and masks are real, some are generated by a model; they are mixed and shuffled.</p>
     <div class="startrow">
       <input type="text" id="ename" placeholder="Your name" value="${evaluatorName}" style="width:240px">
       <button class="primary" id="go">Begin</button>
@@ -397,12 +392,12 @@ function screenStart(){
       <div class="ex3">
         <figure><img src="example/img.png" alt="example radiograph"><figcaption>Radiograph</figcaption></figure>
         <figure><img src="example/anat.png" alt="example anatomy overlay"><figcaption>Anatomy</figcaption></figure>
-        <figure><img src="example/lesion.png" alt="example finding mask"><figcaption>Findings (mask)</figcaption></figure>
+        <figure><img src="example/lesion.png" alt="example finding mask"><figcaption>Findings</figcaption></figure>
       </div>
       <div class="exq">${ex}</div>
     </div>
     <p class="fine">Hover a score button to see its definition; “Scoring guide” (top right) lists all of them.
-      Normal cases ask “Any abnormality visible?” instead of the finding questions. Re-entering the same name resumes where you left off, on any computer.</p>
+      Normal cases ask “Normal, as described?” instead of the finding questions. Re-entering the same name resumes where you left off, on any computer.</p>
   </div>`;
   const go = async () => {
     const nm = document.getElementById("ename").value.trim();
@@ -440,51 +435,53 @@ function firstUnrated(){ for (let i=0;i<ORDER.length;i++) if (!complete(ITEMS[OR
 /* ============================================================ reading page */
 function scaleHTML(it, q, r){
   const d = q.def, val = r[q.id];
-  const btns = SCALE.map((v, i) => `<button data-q="${q.id}" data-v="${v}" class="${v === 0 ? "mid" : ""}"
-      title="${fmt(v)}: ${d.anchors[i]}" aria-pressed="${val === v}">${fmt(v)}</button>`).join("")
+  const btns = SCALE.map((v, i) => `<button data-q="${q.id}" data-v="${v}" title="${v}: ${d.anchors[i]}" aria-pressed="${val === v}">${v}</button>`).join("")
     + (d.na ? `<button class="na" data-q="${q.id}" data-v="NA" aria-pressed="${val === "NA"}" title="not applicable">N/A</button>` : "");
-  const sel = (val !== undefined && val !== "NA") ? `<span class="sel">${fmt(val)}: ${d.anchors[SCALE.indexOf(val)]}</span>`
-    : val === "NA" ? `<span class="sel">N/A</span>` : `<span>−2 ${d.anchors[0]}</span><span>+2 ${d.anchors[4]}</span>`;
+  const sel = (val !== undefined && val !== "NA") ? `<span class="sel">${val}: ${d.anchors[SCALE.indexOf(val)]}</span>`
+    : val === "NA" ? `<span class="sel">N/A</span>` : `<span>1 ${d.anchors[0]}</span><span>5 ${d.anchors[4]}</span>`;
   return `<div class="scale">${btns}</div><div class="anc">${sel}</div>`;   // .anc shows only on the active question
 }
 
 function qHTML(it, q, r, idx){
   const d = q.def, f = q.fi >= 0 ? it.findings[q.fi] : null;
   const ask = typeof d.ask === "function" ? d.ask(f) : d.ask;
-  const hint = d.sev ? "0 = as described" : (d.key === "loc" && f ? f.location : "");
-  const dim = (d.key === "loc" || d.key === "sev") && r[q.id] === "NA" && typeof r[`f${q.fi+1}_vis`] === "number" && r[`f${q.fi+1}_vis`] <= -1;
-  return `<div class="q ${d.sev ? "sev" : ""} ${idx === focus ? "active" : ""} ${dim ? "dim" : ""}" data-idx="${idx}" title="${ask.replace(/"/g, "&quot;")}">
+  const hint = f ? (d.key === "loc" ? f.location : d.key === "sev" ? f.modifier : "") : "";
+  const dim = (d.key === "loc" || d.key === "sev") && r[q.id] === "NA" && typeof r[`f${q.fi+1}_vis`] === "number" && r[`f${q.fi+1}_vis`] <= 2;
+  return `<div class="q ${idx === focus ? "active" : ""} ${dim ? "dim" : ""}" data-idx="${idx}" title="${ask.replace(/"/g, "&quot;")}">
     <h3>${d.title}${hint ? `<small>${hint}</small>` : ""}</h3>${scaleHTML(it, q, r)}</div>`;
 }
 
-function viewerHTML(it){
-  const legend = view === "anat" ? ANAT_LEGEND
-    : view === "lesion" ? it.findings.map(f => `<span><i style="background:${f.color}"></i>${f.name}</span>`).join("") : "";
-  const src = view === "anat" ? it.anat : view === "lesion" ? it.lesion : it.img;
-  const lab = { img:"Radiograph", anat:"Anatomy", lesion:"Findings" };
-  return `<div class="tabs">
-      ${["img","anat","lesion"].map(v => `<button data-view="${v}" aria-pressed="${view === v}" ${v === "lesion" && !it.lesion ? "disabled" : ""}>${lab[v]}</button>`).join("")}
-      <span class="legend">${legend}</span></div>
-    <div class="imgwrap">${src ? `<img id="vimg" src="${src}" data-lab="${lab[view]}" alt="${lab[view]}">` : `<div class="nomask">Normal case: no finding mask</div>`}</div>`;
+function imgsHTML(it){
+  const legend = it.findings.map(f => `<span class="legend"><i style="background:${f.color}"></i>${f.name}</span>`).join("");
+  return `<div class="imgs" id="imgs">
+    <figure class="big" data-view="img"><img src="${it.img}" data-lab="Radiograph" alt="radiograph"><div class="cap"><b>Radiograph</b></div></figure>
+    <figure data-view="anat"><img src="${it.anat}" data-lab="Anatomy" alt="anatomy overlay"><div class="cap"><b>Anatomy</b>${ANAT_LEGEND.replace(/<span>/g, '<span class="legend">')}</div></figure>
+    <figure data-view="lesion">${it.lesion ? `<img src="${it.lesion}" data-lab="Findings" alt="finding masks"><div class="cap"><b>Findings</b>${legend}</div>`
+      : `<div class="nomask">Normal case: no finding mask</div>`}</figure></div>`;
 }
 
-function setView(v, pinned){
-  const it = ITEMS[ORDER[cur]];
-  if (v === "lesion" && !it.lesion) v = "img";
-  if (pinned !== undefined) viewPinned = pinned;
-  if (v === view && document.getElementById("vimg")) return;
-  view = v;
-  document.getElementById("viewer").innerHTML = viewerHTML(it);
-  bindViewer();
-}
-function bindViewer(){
-  document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => setView(b.dataset.view, true));
-  const im = document.getElementById("vimg"); if (im) im.onclick = () => zoom(im.src, im.dataset.lab);
+function markPanel(){
+  const v = QLIST[focus] && QLIST[focus].def.view;
+  document.querySelectorAll(".imgs figure").forEach(f => f.classList.toggle("on", f.dataset.view === v));
 }
 
+/* big radiograph + two half-size overlays stacked beside it, sized to fit the window */
 function fitStage(){
-  const d = document.querySelector(".desc"); if (!d) return;
-  document.documentElement.style.setProperty("--deschh", (d.offsetHeight + 10) + "px");
+  const d = document.querySelector(".desc"), st = document.querySelector(".stage"); if (!d || !st) return;
+  const top = st.getBoundingClientRect().top + window.scrollY;
+  const availH = window.innerHeight - top - 14;
+  const availW = document.querySelector("main").clientWidth - 36 - 14 - 400 - 8;
+  if (window.innerWidth <= 1000){                       // narrow screens: stack everything
+    const w = document.querySelector("main").clientWidth - 24;
+    document.documentElement.style.setProperty("--big", Math.floor(w * 2 / 3) + "px");
+    document.documentElement.style.setProperty("--small", Math.floor(w / 3) + "px");
+    return;
+  }
+  let H = Math.floor(Math.min(availH, availW / 1.5));
+  H = Math.max(H, 360); H -= H % 2;
+  document.documentElement.style.setProperty("--big", H + "px");
+  document.documentElement.style.setProperty("--small", (H / 2 - 4) + "px");
+  document.documentElement.style.setProperty("--qh", H + "px");
 }
 
 function render(){
@@ -497,9 +494,7 @@ function render(){
   if (!r.review_started_at){ r.review_started_at = iso(); }
   localStorage.setItem(LS("res"), JSON.stringify(res));
   tPanel = performance.now();
-  focus = QLIST.findIndex(q => !answered(r, q)); if (focus < 0) focus = 0;
-  viewPinned = false; view = QLIST[focus].def.view;
-  if (view === "lesion" && !it.lesion) view = "img";
+  focus = QLIST.findIndex(q => !answered(r, q) && !fixedNA(it, q)); if (focus < 0) focus = 0;
   document.getElementById("prog").style.width = (100*cur/ORDER.length) + "%";
 
   const chips = it.findings.map(f => `<span class="chip"><i style="background:${f.color}"></i>${[f.name, f.modifier, f.location].filter(Boolean).join(" · ")}</span>`).join("");
@@ -520,21 +515,23 @@ function render(){
   document.getElementById("main").innerHTML = `
     <div class="desc"><span class="lab">Description</span><span class="txt">${it.prompt}</span><span class="chips">${chips}</span></div>
     <div class="stage">
-      <div class="viewer" id="viewer">${viewerHTML(it)}</div>
+      ${imgsHTML(it)}
       <div class="qs">
+        <div class="scalehd">1 = worst · 5 = best / most consistent</div>
         <div id="qlist">${qs}</div>
         <div class="foot">
           <div class="r1"><button class="ghost flagbtn" id="flag" aria-pressed="${!!r.flag}">Flag</button>
             <input type="text" id="note" placeholder="Optional note" value="${(r.note || "").replace(/"/g, "&quot;")}">
             <button class="ghost" id="prev">Back</button><button class="primary" id="next">Next</button></div>
           <div class="r2"><span class="hint"><kbd>1</kbd>–<kbd>5</kbd> score · <kbd>0</kbd> N/A · <kbd>↑</kbd><kbd>↓</kbd> question ·
-            <kbd>Enter</kbd> next · <kbd>V</kbd> image</span><span class="missing" id="missing"></span>
+            <kbd>Enter</kbd> next · click an image to enlarge</span><span class="missing" id="missing"></span>
             <span class="count">${cur+1} / ${ORDER.length} · ${doneCount()} done</span></div>
         </div>
       </div>
     </div>`;
   fitStage();
-  bindQs(); bindViewer();
+  bindQs(); markPanel();
+  document.querySelectorAll(".imgs img").forEach(im => im.onclick = () => zoom(im.src, im.dataset.lab));
   document.getElementById("flag").onclick = e => {
     const on = e.currentTarget.getAttribute("aria-pressed") !== "true";
     e.currentTarget.setAttribute("aria-pressed", on); store(it.uid, { flag: on });
@@ -548,9 +545,6 @@ function render(){
 function bindQs(){
   document.querySelectorAll(".scale button").forEach(b => b.onclick = () =>
     setScore(b.dataset.q, b.dataset.v === "NA" ? "NA" : +b.dataset.v));
-  document.querySelectorAll(".q").forEach(el => el.onmouseenter = () => {
-    const q = QLIST[+el.dataset.idx]; if (!viewPinned) setView(q.def.view);
-  });
 }
 
 function visibleIdx(){ const it = ITEMS[ORDER[cur]]; return QLIST.map((q, i) => i).filter(i => !fixedNA(it, QLIST[i])); }
@@ -574,9 +568,9 @@ function preload(i){
 function setScore(qid, val){
   const it = ITEMS[ORDER[cur]];
   const patch = { [qid]: val };
-  /* finding judged not visible -> location and severity become N/A (still editable) */
+  /* finding judged not visible (1-2) -> location and severity become N/A (still editable) */
   const m = /^f(\d)_vis$/.exec(qid);
-  if (m && typeof val === "number" && val <= -1){
+  if (m && typeof val === "number" && val <= 2){
     ["loc", "sev"].forEach(k => { const id = `f${m[1]}_${k}`; const q = QLIST.find(q => q.id === id); if (q && !fixedNA(it, q)) patch[id] = "NA"; });
   }
   store(it.uid, patch);
@@ -598,7 +592,7 @@ function setScore(qid, val){
 
 function paintFocus(){
   document.querySelectorAll(".q").forEach(q => q.classList.toggle("active", +q.dataset.idx === focus));
-  if (!viewPinned) setView(QLIST[focus].def.view);
+  markPanel();
   const el = document.querySelector(`.q[data-idx="${focus}"]`);
   if (el) el.scrollIntoView({ block:"nearest", behavior:"smooth" });
 }
@@ -678,8 +672,6 @@ document.addEventListener("keydown", e => {
   else if (e.key === "ArrowUp"){ focus = vis[(p + vis.length - 1) % vis.length]; paintFocus(); e.preventDefault(); }
   else if (e.key === "Enter"){ next(); }
   else if (e.key === "Backspace"){ if (cur > 0){ cur--; render(); } e.preventDefault(); }
-  else if (e.key.toLowerCase() === "v"){ const it = ITEMS[ORDER[cur]]; const vs = ["img","anat"].concat(it.lesion ? ["lesion"] : []);
-    setView(vs[(vs.indexOf(view) + 1) % vs.length], true); }
   else if (e.key.toLowerCase() === "f"){ const f = document.getElementById("flag"); if (f) f.click(); }
 });
 
