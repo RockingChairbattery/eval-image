@@ -129,7 +129,7 @@
 <script>
 /* ============================================================ config */
 /* Apps Script web app /exec URL (see apps_script.gs). Leave empty to run offline (results stay in this browser). */
-const ENDPOINT = "";
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbz4mgpPgJCGtq26rct2qnzCbzl70wMI38Q0kj7dUucqheGn3TNthhkSdMA9NXVFmrv47g/exec";
 
 const SCALE = [-2, -1, 0, 1, 2];
 const fmt = v => v === "NA" ? "N/A" : (v > 0 ? "+" + v : String(v));
@@ -140,7 +140,7 @@ const IMG_Q = [
     ask:"Is the radiograph itself (left image) a real chest X-ray? Judge the image, not the overlays.",
     anchors:["Definitely synthetic","Probably synthetic","Cannot tell","Probably real","Definitely real"] },
   { key:"anatomy", title:"Anatomy contours",
-    ask:"Do the contours in the middle image (lungs blue, heart pink, mediastinum yellow, ribs green) follow the structures visible on this radiograph?",
+    ask:"Do the overlays in the middle image (contours: lungs blue, heart pink, mediastinum yellow; shading: ribs green) follow the structures visible on this radiograph?",
     anchors:["Grossly wrong: contours do not follow the anatomy","Clearly off in several places","Roughly right, with obvious local errors",
              "Accurate, minor deviations","Accurate everywhere"] },
 ];
