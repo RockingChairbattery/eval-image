@@ -272,9 +272,15 @@ function queue(uid){
   sendTimer = setTimeout(() => { sendTimer = null; flush(); }, 900);
 }
 
-async function getJSON(url){
-  const r = await fetch(url);
-  const t = await r.text();
+async function getJSON(url, ms = 20000){
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), ms);
+  let r, t;
+  try { r = await fetch(url, { signal: ctl.signal }); t = await r.text(); }
+  catch (e){
+    throw new Error(e.name === "AbortError"
+      ? "no answer from the sheet within " + ms / 1000 + " s — this network or a browser extension may be blocking script.googleusercontent.com"
+      : (e.message || String(e)) + " — this network or a browser extension may be blocking script.google.com / script.googleusercontent.com");
+  } finally { clearTimeout(timer); }
   try { return JSON.parse(t); }
   catch (e){ throw new Error("sheet endpoint answered HTTP " + r.status + " with a non-JSON page" + (/Access denied/i.test(t) ? " (Access denied: deployment access is not 'Anyone')" : "")); }
 }
@@ -398,7 +404,7 @@ const EXAMPLE = {
 /* scores must reach the sheet (readers switch devices), so no case is shown while the sheet cannot be reached */
 function netMsg(err){
   return `<span style="color:#e58a7f">Cannot reach the results sheet, so scores would not be saved. Please try again in a moment;
-    if it keeps failing, contact the study coordinator.</span> <span style="color:var(--ink-faint);font-size:12px">(${String(err && err.message || err).slice(0, 120)})</span>`;
+    if it keeps failing, contact the study coordinator.</span> <span style="color:var(--ink-faint);font-size:12px">(${String(err && err.message || err).slice(0, 200)})</span>`;
 }
 
 function screenStart(errHTML){
