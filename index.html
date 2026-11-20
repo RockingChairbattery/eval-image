@@ -65,14 +65,14 @@
   .fine{color:var(--ink-faint);font-size:12.5px;margin-top:14px}
 
   /* ---------- reading page (fits one screen on a desktop) ---------- */
-  .desc{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);
+  .desc{max-width:1400px;margin-left:auto;margin-right:auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);
     border-left:3px solid var(--accent);border-radius:var(--r);padding:8px 14px;margin-bottom:10px}
   .desc .lab{color:var(--ink-faint);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
   .desc .txt{font-size:18px;font-weight:500}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
   .chip{font-size:12.5px;color:var(--ink-dim);border:1px solid var(--line2);border-radius:14px;padding:2px 10px;white-space:nowrap}
   .chip i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}
-  .stage{display:grid;grid-template-columns:auto minmax(380px,1fr);gap:14px;align-items:start}
+  .stage{display:grid;grid-template-columns:auto minmax(380px,560px);gap:18px;align-items:start;justify-content:center}
   .imgs{display:grid;grid-template-columns:var(--big,560px) var(--small,280px);grid-template-rows:var(--small,280px) var(--small,280px);gap:8px}
   .imgs figure{margin:0;position:relative;background:#000;border:2px solid var(--line);border-radius:8px;overflow:hidden}
   .imgs figure.big{grid-row:1/span 2}
@@ -84,7 +84,7 @@
   .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}
   .nomask{display:flex;align-items:center;justify-content:center;height:100%;color:var(--ink-faint);font-size:13px}
 
-  .qs{overflow:auto;padding-right:4px;display:flex;flex-direction:column;height:var(--qh,auto)}
+  .qs{padding-right:4px;display:flex;flex-direction:column}
   .scalehd{font-size:11.5px;color:var(--ink-faint);margin-bottom:6px}
   .grp{font-size:12px;color:var(--ink-faint);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin:10px 0 2px;
     display:flex;align-items:center;gap:7px}
@@ -108,7 +108,7 @@
   .q.active .anc{display:flex}
   .anc .sel{color:var(--ink)}
 
-  .foot{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+  .foot{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
   .foot .r1{display:flex;gap:8px;align-items:center}
   .foot input[type=text]{flex:1;min-width:0;padding:5px 10px;font-size:13px}
   .foot .r1 .primary{padding:6px 18px}
@@ -122,11 +122,10 @@
   .done{text-align:center;padding:50px 20px}
 
   #zoom{position:fixed;inset:0;background:rgba(5,8,12,.94);display:none;align-items:center;justify-content:center;z-index:50;cursor:zoom-out}
-  #zoom img{max-width:96vw;max-height:94vh}
+  #zoom img{width:512px;height:512px;max-width:96vw;max-height:94vh;object-fit:contain}   /* native size, never upscaled */
   #zoom .lab{position:fixed;top:12px;left:16px;color:var(--ink-dim);font-size:13px}
   @media (max-width:1000px){
     .stage{grid-template-columns:1fr}
-    .qs{height:auto}
     .ex{grid-template-columns:1fr}
     header{padding:0 12px;gap:8px}
     main{padding:12px}
@@ -465,7 +464,8 @@ function markPanel(){
   document.querySelectorAll(".imgs figure").forEach(f => f.classList.toggle("on", f.dataset.view === v));
 }
 
-/* big radiograph + two half-size overlays stacked beside it, sized to fit the window */
+/* big radiograph + two half-size overlays stacked beside it, sized to fit the window; never above native 512 px */
+const MAXPX = 512;
 function fitStage(){
   const d = document.querySelector(".desc"), st = document.querySelector(".stage"); if (!d || !st) return;
   const top = st.getBoundingClientRect().top + window.scrollY;
@@ -473,15 +473,15 @@ function fitStage(){
   const availW = document.querySelector("main").clientWidth - 36 - 14 - 400 - 8;
   if (window.innerWidth <= 1000){                       // narrow screens: stack everything
     const w = document.querySelector("main").clientWidth - 24;
-    document.documentElement.style.setProperty("--big", Math.floor(w * 2 / 3) + "px");
-    document.documentElement.style.setProperty("--small", Math.floor(w / 3) + "px");
+    const B = Math.min(MAXPX, Math.floor(w * 2 / 3) - Math.floor(w * 2 / 3) % 2);
+    document.documentElement.style.setProperty("--big", B + "px");
+    document.documentElement.style.setProperty("--small", (B / 2 - 4) + "px");
     return;
   }
-  let H = Math.floor(Math.min(availH, availW / 1.5));
+  let H = Math.floor(Math.min(availH, availW / 1.5, MAXPX));
   H = Math.max(H, 360); H -= H % 2;
-  document.documentElement.style.setProperty("--big", H + "px");
-  document.documentElement.style.setProperty("--small", (H / 2 - 4) + "px");
-  document.documentElement.style.setProperty("--qh", H + "px");
+  document.documentElement.style.setProperty("--big", (H + 4) + "px");          // + 2 px border each side: image itself is H x H
+  document.documentElement.style.setProperty("--small", ((H + 4) / 2 - 4) + "px");
 }
 
 function render(){
@@ -524,7 +524,7 @@ function render(){
             <input type="text" id="note" placeholder="Optional note" value="${(r.note || "").replace(/"/g, "&quot;")}">
             <button class="ghost" id="prev">Back</button><button class="primary" id="next">Next</button></div>
           <div class="r2"><span class="hint"><kbd>1</kbd>–<kbd>5</kbd> score · <kbd>0</kbd> N/A · <kbd>↑</kbd><kbd>↓</kbd> question ·
-            <kbd>Enter</kbd> next · click an image to enlarge</span><span class="missing" id="missing"></span>
+            <kbd>Enter</kbd> next · click an overlay to view at full size</span><span class="missing" id="missing"></span>
             <span class="count">${cur+1} / ${ORDER.length} · ${doneCount()} done</span></div>
         </div>
       </div>
