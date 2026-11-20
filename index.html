@@ -140,10 +140,12 @@
   <div class="spacer"></div>
   <div class="who" id="who"></div>
   <span class="sync" id="sync" title="connection to the results sheet"></span>
+  <button class="ghost" id="btn-switch" style="display:none">Change reader</button>
   <button class="ghost" id="btn-help">Scoring guide</button>
   <button class="ghost" id="btn-save">Download a copy</button>
 </header>
 <div class="bar"><i id="prog" style="width:0"></i></div>
+<div id="netbanner" style="display:none;background:#3a1d1a;border-bottom:1px solid #5c3733;color:#f0b4ab;padding:8px 18px;font-size:13.5px"></div>
 <main id="main"></main>
 <div id="zoom"><span class="lab" id="zoomlab"></span><img id="zoomimg" alt=""></div>
 
@@ -197,6 +199,9 @@ let ITEMS = [], BY_UID = {}, ORDER = [], cur = 0, res = {}, focus = 0, QLIST = [
 let evaluatorName = "", evaluatorId = "";
 let outbox = [], sending = false, sendTimer = null, lastOk = null, lastErr = "", tPanel = 0;
 const normId = n => n.trim().toLowerCase().replace(/\s+/g, " ");
+/* local copy of the scores is kept per reader (a shared computer must not mix readers); the sheet is the record */
+function loadRes(){ try { res = evaluatorId ? JSON.parse(localStorage.getItem(LS("res:" + evaluatorId)) || "{}") : {}; } catch (e){ res = {}; } }
+function saveRes(){ if (evaluatorId) localStorage.setItem(LS("res:" + evaluatorId), JSON.stringify(res)); }
 
 /* questions of one item, in display order: [{id, key, fi, def}] (fi = finding index or -1) */
 function questions(it){
@@ -226,7 +231,7 @@ async function boot(){
   ITEMS.forEach(it => BY_UID[it.uid] = it);
   evaluatorName = localStorage.getItem(LS("ename")) || "";
   evaluatorId = evaluatorName ? normId(evaluatorName) : "";
-  res = JSON.parse(localStorage.getItem(LS("res")) || "{}");
+  loadRes();
   outbox = JSON.parse(localStorage.getItem(LS("outbox")) || "[]");
   paintSync();
   setInterval(flush, 15000);
@@ -234,8 +239,11 @@ async function boot(){
   window.addEventListener("beforeunload", e => { if (outbox.length){ e.preventDefault(); e.returnValue = ""; } });
   window.addEventListener("resize", fitStage);
   flush();
-  if (evaluatorName){ start(evaluatorName); pullRemote().then(n => { if (n) render(); }).catch(() => {}); }
-  else screenStart();
+  if (!evaluatorName) return screenStart();
+  if (!ENDPOINT) return start(evaluatorName);
+  document.getElementById("main").innerHTML = `<div class="card"><p class="lede">Loading your saved scores…</p></div>`;
+  try { await pullRemote(); start(evaluatorName); }
+  catch (err){ screenStart(netMsg(err)); }
 }
 
 /* ============================================================ sheet sync */
@@ -264,13 +272,20 @@ function queue(uid){
   sendTimer = setTimeout(() => { sendTimer = null; flush(); }, 900);
 }
 
+async function getJSON(url){
+  const r = await fetch(url);
+  const t = await r.text();
+  try { return JSON.parse(t); }
+  catch (e){ throw new Error("sheet endpoint answered HTTP " + r.status + " with a non-JSON page" + (/Access denied/i.test(t) ? " (Access denied: deployment access is not 'Anyone')" : "")); }
+}
+
 async function flush(){
   if (!ENDPOINT || sending || !outbox.length) return;
   sending = true; paintSync("busy");
   try {
     while (outbox.length){
       const url = ENDPOINT + "?action=write&data=" + encodeURIComponent(JSON.stringify(outbox[0]));
-      const out = await (await fetch(url)).json();
+      const out = await getJSON(url);
       if (out.status !== "ok") throw new Error(out.message || "endpoint did not answer status:ok");
       outbox.shift();
       localStorage.setItem(LS("outbox"), JSON.stringify(outbox));
@@ -295,8 +310,10 @@ const parseScore = s => {
 async function pullRemote(){
   if (!ENDPOINT || !evaluatorId) return 0;
   paintSync("busy");
-  const out = await (await fetch(ENDPOINT + "?action=read&evaluator_id=" + encodeURIComponent(evaluatorId))).json();
-  if (out.status !== "ok") throw new Error(out.message || "endpoint did not answer status:ok");
+  let out;
+  try { out = await getJSON(ENDPOINT + "?action=read&evaluator_id=" + encodeURIComponent(evaluatorId));
+    if (out.status !== "ok") throw new Error(out.message || "endpoint did not answer status:ok");
+  } catch (err){ lastErr = String(err.message || err); paintSync("down"); throw err; }
   const remote = {};
   let restored = 0;
   (out.rows || []).forEach(row => {
@@ -311,7 +328,7 @@ async function pullRemote(){
     questions(BY_UID[uid]).forEach(q => { const s = parseScore(row[q.id]); if (s !== undefined) rec[q.id] = s; });
     res[uid] = rec; restored++;
   });
-  localStorage.setItem(LS("res"), JSON.stringify(res));
+  saveRes();
   lastOk = new Date(); lastErr = "";
   ITEMS.forEach(it => {                       // anything newer on this device goes back into the queue
     const r = res[it.uid];
@@ -331,7 +348,13 @@ function paintSync(force){
   el.title = lastErr || "connection to the results sheet";
   if (!ENDPOINT){ el.dataset.state = ""; el.textContent = "Saved on this device"; return; }
   if (force === "busy"){ el.dataset.state = "busy"; el.textContent = "Saving…"; return; }
-  if (lastErr && outbox.length){ el.dataset.state = "err"; el.textContent = "Not saving · " + outbox.length + " held · details"; return; }
+  if (force === "down"){ el.dataset.state = "err"; el.textContent = "Sheet not reachable"; return; }
+  const nb = document.getElementById("netbanner");
+  const failing = !!(lastErr && outbox.length);
+  nb.style.display = failing ? "block" : "none";
+  if (failing) nb.textContent = "Scores are NOT reaching the results sheet (" + outbox.length + " case" + (outbox.length > 1 ? "s" : "")
+    + " waiting). They are kept in this browser and sent automatically when the connection returns — keep this tab open and do not switch devices.";
+  if (failing){ el.dataset.state = "err"; el.textContent = "Not saving · " + outbox.length + " held · details"; return; }
   if (outbox.length){ el.dataset.state = "queued"; el.textContent = outbox.length + " waiting to save"; return; }
   el.dataset.state = "ok";
   el.textContent = lastOk ? "Saved " + lastOk.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}) : "Connected";
@@ -372,7 +395,13 @@ const EXAMPLE = {
     { lab:"Mask fits?", look:"Findings panel", v:4, why:"Good, minor boundary errors" },
   ]};
 
-function screenStart(){
+/* scores must reach the sheet (readers switch devices), so no case is shown while the sheet cannot be reached */
+function netMsg(err){
+  return `<span style="color:#e58a7f">Cannot reach the results sheet, so scores would not be saved. Please try again in a moment;
+    if it keeps failing, contact the study coordinator.</span> <span style="color:var(--ink-faint);font-size:12px">(${String(err && err.message || err).slice(0, 120)})</span>`;
+}
+
+function screenStart(errHTML){
   const ex = EXAMPLE.rows.map(r => r.grp ? `<h4>${r.grp}</h4>` :
     `<div class="row"><span class="lab">${r.lab}</span><span class="ans"><b>${r.v}</b><i>${r.why}</i></span>
       <span class="look">${r.look}</span></div>`).join("");
@@ -384,7 +413,7 @@ function screenStart(){
     <div class="startrow">
       <input type="text" id="ename" placeholder="Your name" value="${evaluatorName}" style="width:240px">
       <button class="primary" id="go">Begin</button>
-      <span class="lede" id="start-msg"></span>
+      <span class="lede" id="start-msg">${errHTML || ""}</span>
     </div>
     <div class="exhead"><h2>Example</h2><span>not part of the study · description: “${EXAMPLE.prompt}”</span></div>
     <div class="ex">
@@ -402,15 +431,13 @@ function screenStart(){
     const nm = document.getElementById("ename").value.trim();
     if (!nm){ document.getElementById("ename").focus(); return; }
     const btn = document.getElementById("go"), msg = document.getElementById("start-msg");
-    evaluatorName = nm; evaluatorId = normId(nm);
+    evaluatorName = nm; evaluatorId = normId(nm); loadRes();
     btn.disabled = true; btn.textContent = "Checking…";
     let restored = 0, failed = false;
-    try { restored = await pullRemote(); } catch (err){ failed = true; }
+    try { restored = await pullRemote(); } catch (err){ failed = err; }
     btn.disabled = false; btn.textContent = "Begin";
-    if (failed){
-      msg.textContent = "Could not reach the spreadsheet just now — scores are held on this device and upload once it answers.";
-      setTimeout(() => start(nm), 2000);
-    } else { if (restored) msg.textContent = "Picked up " + restored + " cases you scored earlier."; start(nm); }
+    if (failed){ msg.innerHTML = netMsg(failed); }
+    else { if (restored) msg.textContent = "Picked up " + restored + " cases you scored earlier."; start(nm); }
   };
   document.getElementById("go").onclick = go;
   document.getElementById("ename").onkeydown = e => { if (e.key === "Enter") go(); };
@@ -419,10 +446,9 @@ function screenStart(){
 function start(name){
   evaluatorName = name; evaluatorId = normId(name);
   localStorage.setItem(LS("ename"), evaluatorName);
-  outbox.forEach(r => { r.evaluator_id = evaluatorId; r.evaluator_name = evaluatorName; });
-  localStorage.setItem(LS("outbox"), JSON.stringify(outbox));
   ORDER = seededShuffle(ITEMS.map((_,i) => i), evaluatorId);
   document.getElementById("who").textContent = evaluatorName;
+  document.getElementById("btn-switch").style.display = "";
   cur = firstUnrated(); render();
 }
 
@@ -492,7 +518,7 @@ function render(){
   QLIST = questions(it);
   QLIST.forEach(q => { if (fixedNA(it, q) && r[q.id] === undefined) r[q.id] = "NA"; });
   if (!r.review_started_at){ r.review_started_at = iso(); }
-  localStorage.setItem(LS("res"), JSON.stringify(res));
+  saveRes();
   tPanel = performance.now();
   focus = QLIST.findIndex(q => !answered(r, q) && !fixedNA(it, q)); if (focus < 0) focus = 0;
   document.getElementById("prog").style.width = (100*cur/ORDER.length) + "%";
@@ -605,7 +631,7 @@ function store(uid, patch){
   res[uid] = Object.assign({ uid }, prev, patch, {
     time_spent_sec: +((prev.time_spent_sec || 0) + spent).toFixed(1),
     review_started_at: prev.review_started_at || iso(), review_submitted_at: iso(), updated_at: iso() });
-  localStorage.setItem(LS("res"), JSON.stringify(res));
+  saveRes();
   queue(uid);
 }
 
@@ -652,6 +678,12 @@ function download(){
 }
 
 document.getElementById("btn-save").onclick = download;
+document.getElementById("btn-switch").onclick = () => {
+  localStorage.removeItem(LS("ename"));
+  evaluatorName = ""; evaluatorId = ""; res = {}; ORDER = []; QLIST = [];
+  document.getElementById("who").textContent = ""; document.getElementById("btn-switch").style.display = "none";
+  document.getElementById("prog").style.width = "0"; screenStart();
+};
 document.getElementById("btn-help").onclick = () => {
   const w = window.open("", "_blank");
   w.document.write(`<title>Scoring guide</title><style>body{font:15px/1.6 ui-sans-serif,system-ui;max-width:48rem;margin:40px auto;
