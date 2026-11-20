@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chest X-ray image reading study</title>
+<style>
+  :root{
+    --bg:#0c1016; --panel:#131923; --line:#242e3c; --line2:#33404f;
+    --ink:#e6ecf3; --ink-dim:#8fa1b5; --ink-faint:#5d6f83;
+    --accent:#6fb6c9; --good:#7bc490; --warn:#d9a441; --sev:#c99ae8;
+    --r:6px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:var(--bg);color:var(--ink);
+    font:15px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  button{font:inherit;color:inherit;cursor:pointer}
+  button:disabled{opacity:.45;cursor:default}
+  a{color:var(--accent)}
+
+  header{display:flex;align-items:center;gap:14px;padding:10px 20px;border-bottom:1px solid var(--line);
+    background:var(--panel);position:sticky;top:0;z-index:10}
+  .brand{font-weight:600}
+  .brand span{color:var(--ink-faint);font-weight:400;margin-left:8px}
+  .spacer{flex:1}
+  .who{color:var(--ink-dim);font-size:13px}
+  .ghost{background:none;border:1px solid var(--line2);border-radius:var(--r);padding:5px 11px;font-size:13px;color:var(--ink-dim)}
+  .ghost:hover{border-color:var(--accent);color:var(--ink)}
+  .sync{font-size:12.5px;color:var(--ink-faint);display:inline-flex;align-items:center;gap:7px;padding:4px 10px;
+    border:1px solid var(--line);border-radius:20px;white-space:nowrap}
+  .sync::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ink-faint)}
+  .sync[data-state=ok]{color:var(--good)} .sync[data-state=ok]::before{background:var(--good)}
+  .sync[data-state=busy]{color:var(--accent)} .sync[data-state=busy]::before{background:var(--accent)}
+  .sync[data-state=queued]{color:var(--warn)} .sync[data-state=queued]::before{background:var(--warn)}
+  .sync[data-state=err]{color:#e58a7f;border-color:#5c3733;cursor:pointer} .sync[data-state=err]::before{background:#e58a7f}
+  .banner{background:#2a1f14;border:1px solid #5c4526;color:#e0c58a;border-radius:var(--r);padding:11px 14px;margin-bottom:16px;font-size:13.5px}
+  .bar{height:3px;background:#1b2431}
+  .bar>i{display:block;height:100%;background:var(--accent);transition:width .2s}
+  main{max-width:1440px;margin:0 auto;padding:18px 20px 60px}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:26px 28px;max-width:980px;margin:0 auto}
+  .card h1{font-size:23px;margin:0 0 6px;font-weight:600}
+  .card h2{font-size:15px;margin:26px 0 8px;font-weight:600}
+  .lede{color:var(--ink-dim);margin:0 0 4px;max-width:78ch}
+  .rubric{width:100%;border-collapse:collapse;margin-top:8px;font-size:13.5px}
+  .rubric td{border:1px solid var(--line);padding:6px 10px;vertical-align:top}
+  .rubric td:first-child{width:52px;text-align:center;color:var(--accent);font-weight:600}
+  .rubric.sev td:first-child{color:var(--sev)}
+  input[type=text]{background:#0e141d;border:1px solid var(--line2);border-radius:var(--r);color:var(--ink);padding:9px 12px;font:inherit;width:260px}
+  input[type=text]:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .primary{background:var(--accent);color:#08222a;border:none;border-radius:var(--r);padding:10px 20px;font-weight:600}
+  .primary:hover{filter:brightness(1.08)}
+
+  .panels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  figure{margin:0;background:#0a0e14;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  figure img{display:block;width:100%;height:auto;cursor:zoom-in}
+  figcaption{padding:7px 11px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:12.5px;
+    display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  figcaption b{color:var(--ink-dim);font-weight:600}
+  .legend{display:flex;gap:12px;flex-wrap:wrap}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+  .nomask{display:flex;align-items:center;justify-content:center;aspect-ratio:1/1;color:var(--ink-faint);font-size:14px}
+
+  .prompt{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);
+    padding:10px 14px;margin:14px 0}
+  .prompt .req{color:var(--ink-faint);font-size:12px}
+  .prompt .txt{font-size:17px}
+
+  .qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:12px}
+  .block{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 16px}
+  .block h2{margin:0 0 4px;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+  .block h2 .sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .block .spec{color:var(--ink-dim);font-size:13px;margin-bottom:4px}
+  .q{border-top:1px solid var(--line);padding:9px 0 8px}
+  .q:first-of-type{border-top:none}
+  .q h3{margin:0;font-size:13.5px;font-weight:600}
+  .q p{margin:0 0 7px;color:var(--ink-dim);font-size:12.5px}
+  .q.active{box-shadow:inset 3px 0 0 var(--accent);padding-left:9px;margin-left:-12px}
+  .scale{display:flex;gap:5px}
+  .scale button{flex:1;background:#0e141d;border:1px solid var(--line2);border-radius:var(--r);padding:7px 0;font-size:14px;
+    font-weight:600;color:var(--ink-dim)}
+  .scale button:hover{border-color:var(--accent);color:var(--ink)}
+  .scale button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#08222a}
+  .scale button.na{flex:.8;font-weight:500;font-size:12.5px}
+  .q.sev .scale button[aria-pressed=true]{background:var(--sev);border-color:var(--sev);color:#1d0f29}
+  .q.sev .scale button.mid{border-color:#5d4c6e}
+  .ends{display:flex;justify-content:space-between;color:var(--ink-faint);font-size:11.5px;margin-top:3px;gap:10px}
+  .ends .sel{color:var(--ink)}
+  .q.sev h3::after{content:"0 = as described";margin-left:8px;color:var(--sev);font-weight:500;font-size:11.5px;
+    border:1px solid #5d4c6e;border-radius:10px;padding:0 7px}
+
+  .extras{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap}
+  .extras input[type=text]{flex:1;width:auto;min-width:160px}
+  .flagbtn[aria-pressed=true]{border-color:var(--warn);color:var(--warn)}
+  .nav{display:flex;gap:10px;align-items:center;margin-top:14px}
+  .nav .count{margin-left:auto;color:var(--ink-faint);font-size:13px}
+  .missing{color:var(--warn);font-size:13px}
+  .hint{color:var(--ink-faint);font-size:12.5px;margin-top:10px;line-height:1.7}
+  kbd{background:#0e141d;border:1px solid var(--line2);border-bottom-width:2px;border-radius:4px;padding:1px 6px;
+    font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink-dim)}
+  .done{text-align:center;padding:50px 20px}
+
+  #zoom{position:fixed;inset:0;background:rgba(5,8,12,.94);display:none;align-items:center;justify-content:center;z-index:50;cursor:zoom-out}
+  #zoom img{max-width:96vw;max-height:94vh;image-rendering:auto}
+  #zoom .lab{position:fixed;top:12px;left:16px;color:var(--ink-dim);font-size:13px}
+  @media (max-width:900px){
+    .panels{grid-template-columns:1fr}
+    .qgrid{grid-template-columns:1fr}
+    header{padding:10px 14px;gap:10px}
+    main{padding:14px 14px 50px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Image reading study<span>chest radiographs</span></div>
+  <div class="spacer"></div>
+  <div class="who" id="who"></div>
+  <span class="sync" id="sync" title="connection to the results sheet"></span>
+  <button class="ghost" id="btn-help">Scoring guide</button>
+  <button class="ghost" id="btn-save">Download a copy</button>
+</header>
+<div class="bar"><i id="prog" style="width:0"></i></div>
+<main id="main"></main>
+<div id="zoom"><span class="lab" id="zoomlab"></span><img id="zoomimg" alt=""></div>
+
+<script>
+/* ============================================================ config */
+/* Apps Script web app /exec URL (see apps_script.gs). Leave empty to run offline (results stay in this browser). */
+const ENDPOINT = "";
+
+const SCALE = [-2, -1, 0, 1, 2];
+const fmt = v => v === "NA" ? "N/A" : (v > 0 ? "+" + v : String(v));
+
+/* image-level questions */
+const IMG_Q = [
+  { key:"realism", title:"Image realism",
+    ask:"Is the radiograph itself (left image) a real chest X-ray? Judge the image, not the overlays.",
+    anchors:["Definitely synthetic","Probably synthetic","Cannot tell","Probably real","Definitely real"] },
+  { key:"anatomy", title:"Anatomy contours",
+    ask:"Do the contours in the middle image (lungs blue, heart pink, mediastinum yellow, ribs green) follow the structures visible on this radiograph?",
+    anchors:["Grossly wrong: contours do not follow the anatomy","Clearly off in several places","Roughly right, with obvious local errors",
+             "Accurate, minor deviations","Accurate everywhere"] },
+];
+/* normal cases only */
+const NORMAL_Q = { key:"abnormal", title:"Visible abnormality",
+  ask:"The description says this radiograph is normal. Is any abnormality visible?",
+  anchors:["Definitely no abnormality","Probably no abnormality","Equivocal","Probably abnormal","Definitely abnormal"] };
+/* per finding */
+const F_Q = [
+  { key:"vis", title:"Visibility",
+    ask:f => `Is ${f.name.toLowerCase()} visible on the radiograph?`,
+    anchors:["Definitely not visible","Probably not visible","Equivocal","Probably visible","Clearly visible"] },
+  { key:"loc", title:"Location", na:true,
+    ask:f => `Is it where the description says (${f.location || "—"})?`,
+    anchors:["Wrong side or wrong region","Right side, clearly wrong zone","Overlaps the stated location, centred elsewhere",
+             "In the stated location, small deviation","Exactly as described"] },
+  { key:"sev", title:"Severity / extent", na:true, sev:true,
+    ask:f => `Compared with the description (“${f.modifier || "—"}”), the finding on the image is…`,
+    anchors:["Much milder / smaller","Milder / smaller","As described","More severe / larger","Much more severe / larger"] },
+  { key:"mask", title:"Finding mask",
+    ask:f => `Does the mask in the right image match the visible ${f.name.toLowerCase()}?`,
+    anchors:["No visible abnormality under the mask, or completely misplaced","Overlaps only a small part of it",
+             "Roughly right but clearly too large, too small or shifted","Good match, minor boundary errors","Matches the visible finding exactly"] },
+];
+
+const SHEET_COLS = ["evaluator_id","evaluator_name","sample_id","n_findings","prompt","realism","anatomy","abnormal",
+  "f1_name","f1_vis","f1_loc","f1_sev","f1_mask","f2_name","f2_vis","f2_loc","f2_sev","f2_mask",
+  "flag","note","time_spent_sec","review_started_at","review_submitted_at","updated_at"];
+
+const LS = k => "imgeval_v1_" + k;
+const iso = () => new Date().toISOString();
+
+/* ============================================================ state */
+let ITEMS = [], BY_UID = {}, ORDER = [], cur = 0, res = {}, focus = 0, QLIST = [];
+let evaluatorName = "", evaluatorId = "";
+let outbox = [], sending = false, sendTimer = null, lastOk = null, lastErr = "", tPanel = 0;
+const normId = n => n.trim().toLowerCase().replace(/\s+/g, " ");
+
+/* questions of one item, in display order: [{id, key, fi, def}] (fi = finding index or -1) */
+function questions(it){
+  const qs = IMG_Q.map(d => ({ id:d.key, fi:-1, def:d }));
+  if (!it.findings.length) qs.push({ id:NORMAL_Q.key, fi:-1, def:NORMAL_Q });
+  it.findings.forEach((f, i) => F_Q.forEach(d => qs.push({ id:`f${i+1}_${d.key}`, fi:i, def:d })));
+  return qs;
+}
+/* a question that the description does not support is fixed to N/A */
+function fixedNA(it, q){
+  if (q.fi < 0) return false;
+  const f = it.findings[q.fi];
+  return (q.def.key === "loc" && !f.location) || (q.def.key === "sev" && !f.modifier);
+}
+
+function seededShuffle(arr, seedStr){
+  let h = 2166136261;
+  for (const c of seedStr){ h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); }
+  const rnd = () => { h ^= h<<13; h ^= h>>>17; h ^= h<<5; return ((h>>>0) % 100000) / 100000; };
+  const a = arr.slice();
+  for (let i=a.length-1;i>0;i--){ const j = Math.floor(rnd()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+async function boot(){
+  ITEMS = (await (await fetch("items.json")).json()).items;
+  ITEMS.forEach(it => BY_UID[it.uid] = it);
+  evaluatorName = localStorage.getItem(LS("ename")) || "";
+  evaluatorId = evaluatorName ? normId(evaluatorName) : "";
+  res = JSON.parse(localStorage.getItem(LS("res")) || "{}");
+  outbox = JSON.parse(localStorage.getItem(LS("outbox")) || "[]");
+  paintSync();
+  setInterval(flush, 15000);
+  window.addEventListener("online", flush);
+  window.addEventListener("beforeunload", e => { if (outbox.length){ e.preventDefault(); e.returnValue = ""; } });
+  flush();
+  if (evaluatorName){ start(evaluatorName); pullRemote().then(n => { if (n) render(); }).catch(() => {}); }
+  else screenStart();
+}
+
+/* ============================================================ sheet sync */
+function rowFor(uid){
+  const r = res[uid] || {}, it = BY_UID[uid] || { findings:[] };
+  const v = k => (r[k] === undefined ? "" : r[k]);
+  const row = { evaluator_id:evaluatorId, evaluator_name:evaluatorName, sample_id:uid, n_findings:it.findings.length,
+    prompt:it.prompt || "", realism:v("realism"), anatomy:v("anatomy"), abnormal:v("abnormal"),
+    flag:r.flag ? 1 : "", note:r.note || "", time_spent_sec:r.time_spent_sec || "",
+    review_started_at:r.review_started_at || "", review_submitted_at:r.review_submitted_at || "", updated_at:r.updated_at || "" };
+  [0,1].forEach(i => {
+    const f = it.findings[i];
+    row[`f${i+1}_name`] = f ? f.name : "";
+    F_Q.forEach(d => row[`f${i+1}_${d.key}`] = f ? v(`f${i+1}_${d.key}`) : "");
+  });
+  return row;
+}
+
+function queue(uid){
+  if (!ENDPOINT) return;
+  outbox = outbox.filter(x => !(x.sample_id === uid && x.evaluator_id === evaluatorId));
+  outbox.push(rowFor(uid));
+  localStorage.setItem(LS("outbox"), JSON.stringify(outbox));
+  paintSync();
+  clearTimeout(sendTimer);
+  sendTimer = setTimeout(() => { sendTimer = null; flush(); }, 900);
+}
+
+async function flush(){
+  if (!ENDPOINT || sending || !outbox.length) return;
+  sending = true; paintSync("busy");
+  try {
+    while (outbox.length){
+      const url = ENDPOINT + "?action=write&data=" + encodeURIComponent(JSON.stringify(outbox[0]));
+      const out = await (await fetch(url)).json();
+      if (out.status !== "ok") throw new Error(out.message || "endpoint did not answer status:ok");
+      outbox.shift();
+      localStorage.setItem(LS("outbox"), JSON.stringify(outbox));
+      lastOk = new Date(); lastErr = "";
+    }
+  } catch (err) {
+    lastErr = String(err.message || err);
+  } finally {
+    sending = false; paintSync();
+    if (outbox.length && !sendTimer) sendTimer = setTimeout(() => { sendTimer = null; flush(); }, 8000);
+  }
+}
+
+const parseScore = s => {
+  const t = String(s ?? "").trim();
+  if (t === "NA") return "NA";
+  if (t === "") return undefined;
+  const n = Number(t);
+  return SCALE.includes(n) ? n : undefined;
+};
+
+async function pullRemote(){
+  if (!ENDPOINT || !evaluatorId) return 0;
+  paintSync("busy");
+  const out = await (await fetch(ENDPOINT + "?action=read&evaluator_id=" + encodeURIComponent(evaluatorId))).json();
+  if (out.status !== "ok") throw new Error(out.message || "endpoint did not answer status:ok");
+  const remote = {};
+  let restored = 0;
+  (out.rows || []).forEach(row => {
+    const uid = String(row.sample_id || "").trim();
+    if (!uid || !BY_UID[uid]) return;
+    remote[uid] = row;
+    const mine = res[uid] || {};
+    if ((mine.updated_at || "") >= (row.updated_at || "")) return;
+    const rec = { uid, flag: ["1","true","TRUE"].includes(String(row.flag)), note: row.note || "",
+      time_spent_sec: parseFloat(row.time_spent_sec) || 0, review_started_at: row.review_started_at || "",
+      review_submitted_at: row.review_submitted_at || "", updated_at: row.updated_at || "" };
+    questions(BY_UID[uid]).forEach(q => { const s = parseScore(row[q.id]); if (s !== undefined) rec[q.id] = s; });
+    res[uid] = rec; restored++;
+  });
+  localStorage.setItem(LS("res"), JSON.stringify(res));
+  lastOk = new Date(); lastErr = "";
+  ITEMS.forEach(it => {                       // anything newer on this device goes back into the queue
+    const r = res[it.uid];
+    if (!r || !questions(it).some(q => r[q.id] !== undefined)) return;
+    const rt = remote[it.uid];
+    if (rt && (rt.updated_at || "") >= (r.updated_at || "")) return;
+    outbox = outbox.filter(x => !(x.sample_id === it.uid && x.evaluator_id === evaluatorId));
+    outbox.push(rowFor(it.uid));
+  });
+  localStorage.setItem(LS("outbox"), JSON.stringify(outbox));
+  paintSync(); flush();
+  return restored;
+}
+
+function paintSync(force){
+  const el = document.getElementById("sync");
+  el.title = lastErr || "connection to the results sheet";
+  if (!ENDPOINT){ el.dataset.state = ""; el.textContent = "Saved on this device"; return; }
+  if (force === "busy"){ el.dataset.state = "busy"; el.textContent = "Saving…"; return; }
+  if (lastErr && outbox.length){ el.dataset.state = "err"; el.textContent = "Not saving · " + outbox.length + " held · details"; return; }
+  if (outbox.length){ el.dataset.state = "queued"; el.textContent = outbox.length + " waiting to save"; return; }
+  el.dataset.state = "ok";
+  el.textContent = lastOk ? "Saved " + lastOk.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}) : "Connected to the sheet";
+}
+document.getElementById("sync").onclick = async () => {
+  if (!ENDPOINT) return;
+  lastErr = ""; paintSync("busy"); await flush();
+  alert(lastErr ? "Scores are not reaching the spreadsheet.\n\n" + lastErr + "\n\nNothing is lost — " + outbox.length
+      + " cases are held on this device and will upload once the endpoint answers. Leave this tab open."
+    : "Connection is fine. Everything scored so far is in the spreadsheet.");
+};
+
+/* ============================================================ screens */
+function rubricHTML(){
+  const tbl = (d, sev) => `<table class="rubric ${sev ? "sev" : ""}"><tbody>${d.anchors.map((a,i) =>
+    `<tr><td>${fmt(SCALE[i])}</td><td>${a}</td></tr>`).join("")}</tbody></table>`;
+  const ask = d => typeof d.ask === "function" ? d.ask({ name:"the finding", location:"…", modifier:"…" }) : d.ask;
+  return `
+    <h2>Per image</h2>
+    ${IMG_Q.map(d => `<h2 style="margin-top:14px">${d.title}</h2><p class="lede">${ask(d)}</p>${tbl(d)}`).join("")}
+    <h2 style="margin-top:14px">${NORMAL_Q.title} <span style="color:var(--ink-faint);font-weight:400">(normal cases only)</span></h2>
+    <p class="lede">${NORMAL_Q.ask}</p>${tbl(NORMAL_Q)}
+    <h2>Per finding (each finding of the description is scored separately)</h2>
+    ${F_Q.map(d => `<h2 style="margin-top:14px">${d.title}</h2><p class="lede">${ask(d)}${d.sev
+      ? " <b>This is the only question where 0 is the best answer</b>: negative = milder than described, positive = more severe." : ""}
+      ${d.na ? " Fixed to N/A when the description gives no " + (d.key === "loc" ? "location" : "severity") + "." : ""}</p>${tbl(d, d.sev)}`).join("")}`;
+}
+
+function screenStart(){
+  document.getElementById("main").innerHTML = `
+  <div class="card">
+    <h1>Rate ${ITEMS.length} chest radiographs</h1>
+    <p class="lede">Each case shows three views of the same radiograph: the image itself, the image with anatomy contours,
+    and the image with the mask of each finding named in the description. All questions use the same five-point scale from
+    <b>−2</b> to <b>+2</b>, each point with a written definition.</p>
+    <div class="extras" style="max-width:660px;margin-top:18px">
+      <input type="text" id="ename" placeholder="Your name" value="${evaluatorName}">
+      <button class="primary" id="go">Begin reading</button>
+    </div>
+    <p class="lede" id="start-msg" style="margin-top:12px"></p>
+    <p class="lede" id="save-note" style="margin-top:8px;font-size:13.5px"></p>
+    <h2>What you are not told</h2>
+    <p class="lede">Some radiographs are real and some are generated by a model; some masks are expert annotations and some
+    are generated. The proportion is not disclosed and the order is shuffled, so judge each case on its own. Click any image
+    to enlarge it. About 30–40 seconds per case is typical.</p>
+    ${rubricHTML()}
+  </div>`;
+  document.getElementById("save-note").textContent = ENDPOINT
+    ? "Scores reach the study spreadsheet as you work. Typing the same name again picks up where you left off, also on another computer."
+    : "Progress is saved in this browser, so you can close the tab and resume on the same machine.";
+  const go = async () => {
+    const nm = document.getElementById("ename").value.trim();
+    if (!nm){ document.getElementById("ename").focus(); return; }
+    const btn = document.getElementById("go"), msg = document.getElementById("start-msg");
+    evaluatorName = nm; evaluatorId = normId(nm);
+    btn.disabled = true; btn.textContent = "Checking…";
+    let restored = 0, failed = false;
+    try { restored = await pullRemote(); } catch (err){ failed = true; }
+    btn.disabled = false; btn.textContent = "Begin reading";
+    if (failed){
+      msg.textContent = "Could not reach the spreadsheet just now. You can start — scores are held on this device and upload once it answers.";
+      setTimeout(() => start(nm), 2000);
+    } else { if (restored) msg.textContent = "Picked up " + restored + " cases you scored earlier."; start(nm); }
+  };
+  document.getElementById("go").onclick = go;
+  document.getElementById("ename").onkeydown = e => { if (e.key === "Enter") go(); };
+}
+
+function start(name){
+  evaluatorName = name; evaluatorId = normId(name);
+  localStorage.setItem(LS("ename"), evaluatorName);
+  outbox.forEach(r => { r.evaluator_id = evaluatorId; r.evaluator_name = evaluatorName; });
+  localStorage.setItem(LS("outbox"), JSON.stringify(outbox));
+  ORDER = seededShuffle(ITEMS.map((_,i) => i), evaluatorId);
+  document.getElementById("who").textContent = evaluatorName;
+  cur = firstUnrated(); render();
+}
+
+const answered = (r, q) => r[q.id] !== undefined;
+function complete(uid){ const it = BY_UID[uid], r = res[uid]; return !!r && questions(it).every(q => answered(r, q)); }
+const doneCount = () => ITEMS.filter(it => complete(it.uid)).length;
+function firstUnrated(){ for (let i=0;i<ORDER.length;i++) if (!complete(ITEMS[ORDER[i]].uid)) return i; return ORDER.length; }
+
+/* ============================================================ reading view */
+function scaleHTML(it, q, r){
+  const d = q.def, fixed = fixedNA(it, q), val = r[q.id];
+  const btns = SCALE.map((v, i) => `<button data-q="${q.id}" data-v="${v}" class="${v === 0 ? "mid" : ""}"
+      title="${fmt(v)} — ${d.anchors[i]}" aria-pressed="${val === v}" ${fixed ? "disabled" : ""}>${fmt(v)}</button>`).join("")
+    + (d.na ? `<button class="na" data-q="${q.id}" data-v="NA" aria-pressed="${val === "NA"}"
+        ${fixed ? "disabled" : ""} title="not applicable">N/A</button>` : "");
+  const selTxt = (val !== undefined && val !== "NA") ? d.anchors[SCALE.indexOf(val)] : "";
+  return `<div class="scale">${btns}</div>
+    <div class="ends"><span>${fmt(-2)} ${d.anchors[0]}</span>${selTxt ? `<span class="sel">${fmt(val)}: ${selTxt}</span>` : ""}
+      <span>${fmt(2)} ${d.anchors[4]}</span></div>`;
+}
+
+function qHTML(it, q, r, idx){
+  const d = q.def, f = q.fi >= 0 ? it.findings[q.fi] : null;
+  const ask = typeof d.ask === "function" ? d.ask(f) : d.ask;
+  const note = fixedNA(it, q) ? `<p style="color:var(--ink-faint)">Not specified in the description: N/A.</p>` : `<p>${ask}</p>`;
+  return `<div class="q ${d.sev ? "sev" : ""} ${idx === focus ? "active" : ""}" data-idx="${idx}">
+    <h3>${d.title}</h3>${note}${scaleHTML(it, q, r)}</div>`;
+}
+
+function render(){
+  if (!ORDER.length) return;
+  if (cur >= ORDER.length) return screenDone();
+  const it = ITEMS[ORDER[cur]];
+  const r = res[it.uid] || (res[it.uid] = { uid: it.uid });
+  QLIST = questions(it);
+  QLIST.forEach(q => { if (fixedNA(it, q) && r[q.id] === undefined) r[q.id] = "NA"; });
+  if (!r.review_started_at){ r.review_started_at = iso(); }
+  localStorage.setItem(LS("res"), JSON.stringify(res));
+  tPanel = performance.now();
+  focus = QLIST.findIndex(q => !answered(r, q)); if (focus < 0) focus = 0;
+  document.getElementById("prog").style.width = (100*cur/ORDER.length) + "%";
+
+  const legend = it.findings.map(f => `<span><i style="background:${f.color}"></i>${f.name}</span>`).join("");
+  const imgBlock = `<div class="block"><h2>Whole image</h2>
+      ${QLIST.filter(q => q.fi < 0).map(q => qHTML(it, q, r, QLIST.indexOf(q))).join("")}</div>`;
+  const fBlocks = it.findings.map((f, i) => `<div class="block">
+      <h2><span class="sw" style="background:${f.color}"></span>Finding ${i+1}: ${f.name}</h2>
+      <div class="spec">${[f.modifier, f.name.toLowerCase(), f.location ? "— " + f.location : ""].filter(Boolean).join(" ")}</div>
+      ${QLIST.filter(q => q.fi === i).map(q => qHTML(it, q, r, QLIST.indexOf(q))).join("")}</div>`).join("");
+
+  document.getElementById("main").innerHTML = `
+    <div class="panels">
+      <figure><img src="${it.img}" data-lab="Radiograph" alt="radiograph"><figcaption><b>Radiograph</b><span>patient's right on the left</span></figcaption></figure>
+      <figure><img src="${it.anat}" data-lab="Anatomy contours" alt="radiograph with anatomy contours"><figcaption><b>Anatomy</b>
+        <span class="legend"><span><i style="background:#50c8ff"></i>Lungs</span><span><i style="background:#ff6ec8"></i>Heart</span>
+        <span><i style="background:#ffd75a"></i>Mediastinum</span><span><i style="background:#beffa0"></i>Ribs</span></span></figcaption></figure>
+      <figure>${it.lesion ? `<img src="${it.lesion}" data-lab="Finding masks" alt="radiograph with finding masks">`
+        : `<div class="nomask">Normal case: no finding mask</div>`}
+        <figcaption><b>Finding masks</b><span class="legend">${legend || "none"}</span></figcaption></figure>
+    </div>
+    <div class="prompt"><div class="req">Description</div><div class="txt">${it.prompt}</div></div>
+    <div class="qgrid">${imgBlock}${fBlocks}</div>
+    <div class="extras">
+      <button class="ghost flagbtn" id="flag" aria-pressed="${!!r.flag}">Flag for discussion</button>
+      <input type="text" id="note" placeholder="Optional note" value="${(r.note || "").replace(/"/g, "&quot;")}">
+    </div>
+    <div class="nav">
+      <button class="ghost" id="prev">Back</button>
+      <button class="primary" id="next">Next</button>
+      <span class="missing" id="missing"></span>
+      <span class="count">${cur+1} of ${ORDER.length} · ${doneCount()} done</span>
+    </div>
+    <p class="hint"><kbd>1</kbd>–<kbd>5</kbd> = −2 … +2 for the highlighted question · <kbd>0</kbd> N/A (where offered) ·
+      <kbd>↑</kbd><kbd>↓</kbd> switch question · <kbd>Enter</kbd> next case · <kbd>Backspace</kbd> previous · <kbd>F</kbd> flag ·
+      click an image to enlarge, <kbd>Esc</kbd> to close</p>`;
+
+  document.querySelectorAll(".scale button").forEach(b => b.onclick = () =>
+    setScore(b.dataset.q, b.dataset.v === "NA" ? "NA" : +b.dataset.v));
+  document.querySelectorAll("figure img").forEach(im => im.onclick = () => zoom(im.src, im.dataset.lab));
+  document.getElementById("flag").onclick = e => {
+    const on = e.currentTarget.getAttribute("aria-pressed") !== "true";
+    e.currentTarget.setAttribute("aria-pressed", on); store(it.uid, { flag: on });
+  };
+  document.getElementById("note").onchange = e => store(it.uid, { note: e.target.value });
+  document.getElementById("prev").onclick = () => { if (cur > 0){ cur--; render(); } };
+  document.getElementById("next").onclick = next;
+  preload(cur + 1);
+}
+
+function next(){
+  const it = ITEMS[ORDER[cur]], r = res[it.uid] || {};
+  const miss = QLIST.filter(q => !answered(r, q));
+  if (miss.length){
+    document.getElementById("missing").textContent = miss.length + " question" + (miss.length > 1 ? "s" : "") + " not answered yet";
+    focus = QLIST.indexOf(miss[0]); paintFocus(); return;
+  }
+  cur++; render();
+}
+
+function preload(i){
+  if (i >= ORDER.length) return;
+  const it = ITEMS[ORDER[i]];
+  [it.img, it.anat, it.lesion].filter(Boolean).forEach(s => { const im = new Image(); im.src = s; });
+}
+
+function setScore(qid, val){
+  const it = ITEMS[ORDER[cur]];
+  const patch = { [qid]: val };
+  /* finding judged not visible -> location and severity become N/A (still editable) */
+  const m = /^f(\d)_vis$/.exec(qid);
+  if (m && typeof val === "number" && val <= -1){
+    ["loc", "sev"].forEach(k => { const id = `f${m[1]}_${k}`; if (QLIST.some(q => q.id === id)) patch[id] = "NA"; });
+  }
+  store(it.uid, patch);
+  const r = res[it.uid];
+  QLIST.forEach((q, idx) => {             // repaint only the scales that changed
+    if (!(q.id in patch)) return;
+    const el = document.querySelector(`.q[data-idx="${idx}"]`);
+    el.outerHTML = qHTML(it, q, r, idx);
+  });
+  document.querySelectorAll(".scale button").forEach(b => b.onclick = () =>
+    setScore(b.dataset.q, b.dataset.v === "NA" ? "NA" : +b.dataset.v));
+  document.getElementById("missing").textContent = "";
+  const nxt = QLIST.findIndex((q, i) => i > QLIST.findIndex(x => x.id === qid) && !answered(r, q));
+  const any = QLIST.findIndex(q => !answered(r, q));
+  focus = nxt >= 0 ? nxt : (any >= 0 ? any : QLIST.findIndex(x => x.id === qid));
+  paintFocus();
+  document.querySelector(".count").textContent = `${cur+1} of ${ORDER.length} · ${doneCount()} done`;
+}
+
+function paintFocus(){
+  document.querySelectorAll(".q").forEach(q => q.classList.toggle("active", +q.dataset.idx === focus));
+  const el = document.querySelector(`.q[data-idx="${focus}"]`);
+  if (el){ const b = el.getBoundingClientRect(); if (b.top < 60 || b.bottom > innerHeight) el.scrollIntoView({ block:"center", behavior:"smooth" }); }
+}
+
+function store(uid, patch){
+  const now = performance.now();
+  const spent = Math.min(120, Math.max(0, (now - tPanel) / 1000));
+  tPanel = now;
+  const prev = res[uid] || {};
+  res[uid] = Object.assign({ uid }, prev, patch, {
+    time_spent_sec: +((prev.time_spent_sec || 0) + spent).toFixed(1),
+    review_started_at: prev.review_started_at || iso(), review_submitted_at: iso(), updated_at: iso() });
+  localStorage.setItem(LS("res"), JSON.stringify(res));
+  queue(uid);
+}
+
+function zoom(src, lab){
+  document.getElementById("zoomimg").src = src;
+  document.getElementById("zoomlab").textContent = lab + " — click or Esc to close";
+  document.getElementById("zoom").style.display = "flex";
+}
+document.getElementById("zoom").onclick = () => document.getElementById("zoom").style.display = "none";
+
+function screenDone(){
+  document.getElementById("prog").style.width = "100%";
+  const pending = outbox.length;
+  document.getElementById("main").innerHTML = `
+  <div class="card done">
+    <h1>All ${ORDER.length} cases scored</h1>
+    ${ENDPOINT && pending ? `<div class="banner">${pending} case${pending > 1 ? "s" : ""} still waiting to reach the spreadsheet.
+      Keep this tab open on a working connection, or press Send now.</div>` : ""}
+    <p class="lede" style="margin:0 auto 22px">${ENDPOINT ? (pending ? "Everything else is already in the study spreadsheet."
+      : "Everything is in the study spreadsheet — you can close the tab.") : "Download the results file and send it to the study coordinator."}</p>
+    ${ENDPOINT ? `<button class="primary" id="send">Send now</button>` : ""}
+    <button class="${ENDPOINT ? "ghost" : "primary"}" id="dl" style="margin-left:10px">Download a copy</button>
+    <button class="ghost" id="rev" style="margin-left:10px">Review from the start</button>
+  </div>`;
+  document.getElementById("dl").onclick = download;
+  document.getElementById("rev").onclick = () => { cur = 0; render(); };
+  const sb = document.getElementById("send");
+  if (sb) sb.onclick = async () => { await flush(); screenDone(); };
+}
+
+function download(){
+  const cell = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const rows = [SHEET_COLS.join(",")];
+  ORDER.forEach(ix => {
+    const it = ITEMS[ix], r = res[it.uid];
+    if (!r || !questions(it).some(q => r[q.id] !== undefined)) return;
+    const o = rowFor(it.uid);
+    rows.push(SHEET_COLS.map(c => cell(o[c])).join(","));
+  });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([rows.join("\n")], { type:"text/csv" }));
+  a.download = `imgeval_${evaluatorId || "reader"}_${iso().slice(0,10)}.csv`;
+  a.click();
+}
+
+document.getElementById("btn-save").onclick = download;
+document.getElementById("btn-help").onclick = () => {
+  const w = window.open("", "_blank");
+  w.document.write(`<title>Scoring guide</title><style>body{font:15px/1.6 ui-sans-serif,system-ui;max-width:48rem;margin:40px auto;
+    padding:0 20px;background:#0c1016;color:#e6ecf3}h2{font-size:15px;margin-top:22px}table{width:100%;border-collapse:collapse;font-size:13.5px}
+    td{border:1px solid #242e3c;padding:6px 10px}td:first-child{width:52px;text-align:center;color:#6fb6c9;font-weight:600}
+    .sev td:first-child{color:#c99ae8}p{color:#8fa1b5}</style>` + rubricHTML());
+  w.document.close();
+};
+
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT") return;
+  if (e.key === "Escape"){ document.getElementById("zoom").style.display = "none"; return; }
+  if (!ORDER.length || cur >= ORDER.length || !QLIST.length) return;
+  const q = QLIST[focus], it = ITEMS[ORDER[cur]];
+  if (e.key >= "1" && e.key <= "5"){ if (!fixedNA(it, q)) setScore(q.id, SCALE[+e.key - 1]); e.preventDefault(); }
+  else if (e.key === "0"){ if (q.def.na && !fixedNA(it, q)) setScore(q.id, "NA"); e.preventDefault(); }
+  else if (e.key === "ArrowDown"){ focus = (focus + 1) % QLIST.length; paintFocus(); e.preventDefault(); }
+  else if (e.key === "ArrowUp"){ focus = (focus + QLIST.length - 1) % QLIST.length; paintFocus(); e.preventDefault(); }
+  else if (e.key === "Enter"){ next(); }
+  else if (e.key === "Backspace"){ if (cur > 0){ cur--; render(); } e.preventDefault(); }
+  else if (e.key.toLowerCase() === "f"){ const f = document.getElementById("flag"); if (f) f.click(); }
+});
+
+boot();
+</script>
+</body>
+</html>

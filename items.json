@@ -1,0 +1,1424 @@
+{
+ "version": 1,
+ "n_items": 100,
+ "items": [
+  {
+   "uid": "04f0e98df914",
+   "img": "img/04f0e98df914.png",
+   "anat": "img/04f0e98df914_a.png",
+   "lesion": "img/04f0e98df914_l.png",
+   "prompt": "small right pleural effusion",
+   "findings": [
+    {
+     "name": "Effusion",
+     "modifier": "small",
+     "location": "right",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "09d6bfdd5f44",
+   "img": "img/09d6bfdd5f44.png",
+   "anat": "img/09d6bfdd5f44_a.png",
+   "lesion": "img/09d6bfdd5f44_l.png",
+   "prompt": "nodule in the right mid zone",
+   "findings": [
+    {
+     "name": "Nodule",
+     "modifier": "",
+     "location": "right mid zone",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "0aedddf90a44",
+   "img": "img/0aedddf90a44.png",
+   "anat": "img/0aedddf90a44_a.png",
+   "lesion": "img/0aedddf90a44_l.png",
+   "prompt": "diffuse nodularity in both lungs, large bilateral pleural effusions",
+   "findings": [
+    {
+     "name": "Diffuse Nodule",
+     "modifier": "",
+     "location": "bilateral",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Effusion",
+     "modifier": "large",
+     "location": "bilateral",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "0b8882fbc2af",
+   "img": "img/0b8882fbc2af.png",
+   "anat": "img/0b8882fbc2af_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "0bca86a6db59",
+   "img": "img/0bca86a6db59.png",
+   "anat": "img/0bca86a6db59_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "0dc851aac3a2",
+   "img": "img/0dc851aac3a2.png",
+   "anat": "img/0dc851aac3a2_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "0f0db7796102",
+   "img": "img/0f0db7796102.png",
+   "anat": "img/0f0db7796102_a.png",
+   "lesion": "img/0f0db7796102_l.png",
+   "prompt": "calcified focus in the right lung",
+   "findings": [
+    {
+     "name": "Calcification",
+     "modifier": "",
+     "location": "right",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "105b6b905a20",
+   "img": "img/105b6b905a20.png",
+   "anat": "img/105b6b905a20_a.png",
+   "lesion": "img/105b6b905a20_l.png",
+   "prompt": "nodule in the right mid zone",
+   "findings": [
+    {
+     "name": "Nodule",
+     "modifier": "",
+     "location": "right mid zone",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "1562afa77bcc",
+   "img": "img/1562afa77bcc.png",
+   "anat": "img/1562afa77bcc_a.png",
+   "lesion": "img/1562afa77bcc_l.png",
+   "prompt": "mass in the left lung",
+   "findings": [
+    {
+     "name": "Mass",
+     "modifier": "",
+     "location": "left",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "1a62e5af7132",
+   "img": "img/1a62e5af7132.png",
+   "anat": "img/1a62e5af7132_a.png",
+   "lesion": "img/1a62e5af7132_l.png",
+   "prompt": "small bilateral pleural effusions, small right basal pneumothorax",
+   "findings": [
+    {
+     "name": "Effusion",
+     "modifier": "small",
+     "location": "bilateral",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Pneumothorax",
+     "modifier": "small",
+     "location": "right basal",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "1bcddf503c5d",
+   "img": "img/1bcddf503c5d.png",
+   "anat": "img/1bcddf503c5d_a.png",
+   "lesion": "img/1bcddf503c5d_l.png",
+   "prompt": "emphysema in both lungs",
+   "findings": [
+    {
+     "name": "Emphysema",
+     "modifier": "",
+     "location": "bilateral",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "1c7b9695d717",
+   "img": "img/1c7b9695d717.png",
+   "anat": "img/1c7b9695d717_a.png",
+   "lesion": "img/1c7b9695d717_l.png",
+   "prompt": "left basal pleural thickening",
+   "findings": [
+    {
+     "name": "Pleural Thickening",
+     "modifier": "",
+     "location": "left basal",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "1dd307c626f4",
+   "img": "img/1dd307c626f4.png",
+   "anat": "img/1dd307c626f4_a.png",
+   "lesion": "img/1dd307c626f4_l.png",
+   "prompt": "multiple fractures of the right lower ribs",
+   "findings": [
+    {
+     "name": "Fracture",
+     "modifier": "",
+     "location": "right lower ribs",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "1dd61da9ddee",
+   "img": "img/1dd61da9ddee.png",
+   "anat": "img/1dd61da9ddee_a.png",
+   "lesion": "img/1dd61da9ddee_l.png",
+   "prompt": "calcified focus in the left lung",
+   "findings": [
+    {
+     "name": "Calcification",
+     "modifier": "",
+     "location": "left",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "1ee333c6c783",
+   "img": "img/1ee333c6c783.png",
+   "anat": "img/1ee333c6c783_a.png",
+   "lesion": "img/1ee333c6c783_l.png",
+   "prompt": "right basal pleural thickening",
+   "findings": [
+    {
+     "name": "Pleural Thickening",
+     "modifier": "",
+     "location": "right basal",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "202b5aa0dd61",
+   "img": "img/202b5aa0dd61.png",
+   "anat": "img/202b5aa0dd61_a.png",
+   "lesion": "img/202b5aa0dd61_l.png",
+   "prompt": "marked cardiomegaly",
+   "findings": [
+    {
+     "name": "Cardiomegaly",
+     "modifier": "marked",
+     "location": "",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "21c15dcbcf7b",
+   "img": "img/21c15dcbcf7b.png",
+   "anat": "img/21c15dcbcf7b_a.png",
+   "lesion": "img/21c15dcbcf7b_l.png",
+   "prompt": "fracture of the right upper ribs, right pleural thickening",
+   "findings": [
+    {
+     "name": "Fracture",
+     "modifier": "",
+     "location": "right upper ribs",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Pleural Thickening",
+     "modifier": "",
+     "location": "right",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "24dad7881f32",
+   "img": "img/24dad7881f32.png",
+   "anat": "img/24dad7881f32_a.png",
+   "lesion": "img/24dad7881f32_l.png",
+   "prompt": "multiple calcified foci in the left lung",
+   "findings": [
+    {
+     "name": "Calcification",
+     "modifier": "",
+     "location": "left",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "280b0f73f399",
+   "img": "img/280b0f73f399.png",
+   "anat": "img/280b0f73f399_a.png",
+   "lesion": "img/280b0f73f399_l.png",
+   "prompt": "emphysema in both lungs, severe fibrosis in both lungs",
+   "findings": [
+    {
+     "name": "Emphysema",
+     "modifier": "",
+     "location": "bilateral",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Fibrosis",
+     "modifier": "severe",
+     "location": "bilateral",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "298f2d84a3a4",
+   "img": "img/298f2d84a3a4.png",
+   "anat": "img/298f2d84a3a4_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "2d32bcc34dae",
+   "img": "img/2d32bcc34dae.png",
+   "anat": "img/2d32bcc34dae_a.png",
+   "lesion": "img/2d32bcc34dae_l.png",
+   "prompt": "marked cardiomegaly",
+   "findings": [
+    {
+     "name": "Cardiomegaly",
+     "modifier": "marked",
+     "location": "",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "2dd9b89d5ed2",
+   "img": "img/2dd9b89d5ed2.png",
+   "anat": "img/2dd9b89d5ed2_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "2ea4f0334298",
+   "img": "img/2ea4f0334298.png",
+   "anat": "img/2ea4f0334298_a.png",
+   "lesion": "img/2ea4f0334298_l.png",
+   "prompt": "mass in the right lung",
+   "findings": [
+    {
+     "name": "Mass",
+     "modifier": "",
+     "location": "right",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "31301a87dba5",
+   "img": "img/31301a87dba5.png",
+   "anat": "img/31301a87dba5_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "3567d3aa58d7",
+   "img": "img/3567d3aa58d7.png",
+   "anat": "img/3567d3aa58d7_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "374fbe92a8dd",
+   "img": "img/374fbe92a8dd.png",
+   "anat": "img/374fbe92a8dd_a.png",
+   "lesion": "img/374fbe92a8dd_l.png",
+   "prompt": "moderate bilateral pleural effusions",
+   "findings": [
+    {
+     "name": "Effusion",
+     "modifier": "moderate",
+     "location": "bilateral",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "3a3662841b2f",
+   "img": "img/3a3662841b2f.png",
+   "anat": "img/3a3662841b2f_a.png",
+   "lesion": "img/3a3662841b2f_l.png",
+   "prompt": "small right pleural effusion, small right apical pneumothorax",
+   "findings": [
+    {
+     "name": "Effusion",
+     "modifier": "small",
+     "location": "right",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Pneumothorax",
+     "modifier": "small",
+     "location": "right apical",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "4391ab60caf9",
+   "img": "img/4391ab60caf9.png",
+   "anat": "img/4391ab60caf9_a.png",
+   "lesion": "img/4391ab60caf9_l.png",
+   "prompt": "lobar atelectasis in the right lung",
+   "findings": [
+    {
+     "name": "Atelectasis",
+     "modifier": "lobar",
+     "location": "right",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "46d00801c50a",
+   "img": "img/46d00801c50a.png",
+   "anat": "img/46d00801c50a_a.png",
+   "lesion": "img/46d00801c50a_l.png",
+   "prompt": "cardiomegaly",
+   "findings": [
+    {
+     "name": "Cardiomegaly",
+     "modifier": "",
+     "location": "",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "470b015cf2c5",
+   "img": "img/470b015cf2c5.png",
+   "anat": "img/470b015cf2c5_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "4b0244c155ff",
+   "img": "img/4b0244c155ff.png",
+   "anat": "img/4b0244c155ff_a.png",
+   "lesion": "img/4b0244c155ff_l.png",
+   "prompt": "extensive right pleural thickening, fracture of the right upper ribs",
+   "findings": [
+    {
+     "name": "Pleural Thickening",
+     "modifier": "extensive",
+     "location": "right",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Fracture",
+     "modifier": "",
+     "location": "right upper ribs",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "4b3e8d2526bd",
+   "img": "img/4b3e8d2526bd.png",
+   "anat": "img/4b3e8d2526bd_a.png",
+   "lesion": "img/4b3e8d2526bd_l.png",
+   "prompt": "fracture of the right upper ribs",
+   "findings": [
+    {
+     "name": "Fracture",
+     "modifier": "",
+     "location": "right upper ribs",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "4c06ff14d7f2",
+   "img": "img/4c06ff14d7f2.png",
+   "anat": "img/4c06ff14d7f2_a.png",
+   "lesion": "img/4c06ff14d7f2_l.png",
+   "prompt": "small right pleural effusion",
+   "findings": [
+    {
+     "name": "Effusion",
+     "modifier": "small",
+     "location": "right",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "4fcea1738ee8",
+   "img": "img/4fcea1738ee8.png",
+   "anat": "img/4fcea1738ee8_a.png",
+   "lesion": "img/4fcea1738ee8_l.png",
+   "prompt": "emphysema in both lungs, severe fibrosis in both lungs",
+   "findings": [
+    {
+     "name": "Emphysema",
+     "modifier": "",
+     "location": "bilateral",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Fibrosis",
+     "modifier": "severe",
+     "location": "bilateral",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "50a9ef0fab86",
+   "img": "img/50a9ef0fab86.png",
+   "anat": "img/50a9ef0fab86_a.png",
+   "lesion": "img/50a9ef0fab86_l.png",
+   "prompt": "linear atelectasis in the right lower zone",
+   "findings": [
+    {
+     "name": "Atelectasis",
+     "modifier": "linear",
+     "location": "right lower zone",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "5254df4a2ce0",
+   "img": "img/5254df4a2ce0.png",
+   "anat": "img/5254df4a2ce0_a.png",
+   "lesion": "img/5254df4a2ce0_l.png",
+   "prompt": "cardiomegaly",
+   "findings": [
+    {
+     "name": "Cardiomegaly",
+     "modifier": "",
+     "location": "",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "52a8becbc522",
+   "img": "img/52a8becbc522.png",
+   "anat": "img/52a8becbc522_a.png",
+   "lesion": "img/52a8becbc522_l.png",
+   "prompt": "small right apical pneumothorax, left basal pleural thickening",
+   "findings": [
+    {
+     "name": "Pneumothorax",
+     "modifier": "small",
+     "location": "right apical",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Pleural Thickening",
+     "modifier": "",
+     "location": "left basal",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "53cddf3fbb51",
+   "img": "img/53cddf3fbb51.png",
+   "anat": "img/53cddf3fbb51_a.png",
+   "lesion": "img/53cddf3fbb51_l.png",
+   "prompt": "calcified focus in the left lung",
+   "findings": [
+    {
+     "name": "Calcification",
+     "modifier": "",
+     "location": "left",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "5d945124af06",
+   "img": "img/5d945124af06.png",
+   "anat": "img/5d945124af06_a.png",
+   "lesion": "img/5d945124af06_l.png",
+   "prompt": "mild fibrosis in the left mid zone",
+   "findings": [
+    {
+     "name": "Fibrosis",
+     "modifier": "mild",
+     "location": "left mid zone",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "5d99143275fb",
+   "img": "img/5d99143275fb.png",
+   "anat": "img/5d99143275fb_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "5de38cf0ed6e",
+   "img": "img/5de38cf0ed6e.png",
+   "anat": "img/5de38cf0ed6e_a.png",
+   "lesion": "img/5de38cf0ed6e_l.png",
+   "prompt": "mild consolidation in the right lung",
+   "findings": [
+    {
+     "name": "Consolidation",
+     "modifier": "mild",
+     "location": "right",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "5ec4edae8401",
+   "img": "img/5ec4edae8401.png",
+   "anat": "img/5ec4edae8401_a.png",
+   "lesion": "img/5ec4edae8401_l.png",
+   "prompt": "mild consolidation in both lungs, diffuse nodularity in the right lung",
+   "findings": [
+    {
+     "name": "Consolidation",
+     "modifier": "mild",
+     "location": "bilateral",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Diffuse Nodule",
+     "modifier": "",
+     "location": "right",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "609f0acb57da",
+   "img": "img/609f0acb57da.png",
+   "anat": "img/609f0acb57da_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "6266fe5d6244",
+   "img": "img/6266fe5d6244.png",
+   "anat": "img/6266fe5d6244_a.png",
+   "lesion": "img/6266fe5d6244_l.png",
+   "prompt": "severe consolidation in both lungs, calcified focus in the right lung",
+   "findings": [
+    {
+     "name": "Consolidation",
+     "modifier": "severe",
+     "location": "bilateral",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Calcification",
+     "modifier": "",
+     "location": "right",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "68ef01c8c30e",
+   "img": "img/68ef01c8c30e.png",
+   "anat": "img/68ef01c8c30e_a.png",
+   "lesion": "img/68ef01c8c30e_l.png",
+   "prompt": "nodule in the right mid zone",
+   "findings": [
+    {
+     "name": "Nodule",
+     "modifier": "",
+     "location": "right mid zone",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "6a4678ee3b36",
+   "img": "img/6a4678ee3b36.png",
+   "anat": "img/6a4678ee3b36_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "6e297a65ac74",
+   "img": "img/6e297a65ac74.png",
+   "anat": "img/6e297a65ac74_a.png",
+   "lesion": "img/6e297a65ac74_l.png",
+   "prompt": "diffuse nodularity in both lungs, multiple nodules in both lungs",
+   "findings": [
+    {
+     "name": "Diffuse Nodule",
+     "modifier": "",
+     "location": "bilateral",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Nodule",
+     "modifier": "",
+     "location": "bilateral",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "6e957668aeac",
+   "img": "img/6e957668aeac.png",
+   "anat": "img/6e957668aeac_a.png",
+   "lesion": "img/6e957668aeac_l.png",
+   "prompt": "diffuse nodularity in both lungs",
+   "findings": [
+    {
+     "name": "Diffuse Nodule",
+     "modifier": "",
+     "location": "bilateral",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "6f62ab9aff27",
+   "img": "img/6f62ab9aff27.png",
+   "anat": "img/6f62ab9aff27_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "76b3d9057278",
+   "img": "img/76b3d9057278.png",
+   "anat": "img/76b3d9057278_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "77a952447bb3",
+   "img": "img/77a952447bb3.png",
+   "anat": "img/77a952447bb3_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "7897f222de08",
+   "img": "img/7897f222de08.png",
+   "anat": "img/7897f222de08_a.png",
+   "lesion": "img/7897f222de08_l.png",
+   "prompt": "linear atelectasis in the left lung",
+   "findings": [
+    {
+     "name": "Atelectasis",
+     "modifier": "linear",
+     "location": "left",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "7c641d7a7683",
+   "img": "img/7c641d7a7683.png",
+   "anat": "img/7c641d7a7683_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "81b520490131",
+   "img": "img/81b520490131.png",
+   "anat": "img/81b520490131_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "829b2d1604d8",
+   "img": "img/829b2d1604d8.png",
+   "anat": "img/829b2d1604d8_a.png",
+   "lesion": "img/829b2d1604d8_l.png",
+   "prompt": "calcified focus in the right lung",
+   "findings": [
+    {
+     "name": "Calcification",
+     "modifier": "",
+     "location": "right",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "854f3bcd4e0e",
+   "img": "img/854f3bcd4e0e.png",
+   "anat": "img/854f3bcd4e0e_a.png",
+   "lesion": "img/854f3bcd4e0e_l.png",
+   "prompt": "left basal pleural thickening",
+   "findings": [
+    {
+     "name": "Pleural Thickening",
+     "modifier": "",
+     "location": "left basal",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "86a1c19d4e98",
+   "img": "img/86a1c19d4e98.png",
+   "anat": "img/86a1c19d4e98_a.png",
+   "lesion": "img/86a1c19d4e98_l.png",
+   "prompt": "emphysema in the left lung, mild consolidation in the right lung",
+   "findings": [
+    {
+     "name": "Emphysema",
+     "modifier": "",
+     "location": "left",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Consolidation",
+     "modifier": "mild",
+     "location": "right",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "884b99d7e53c",
+   "img": "img/884b99d7e53c.png",
+   "anat": "img/884b99d7e53c_a.png",
+   "lesion": "img/884b99d7e53c_l.png",
+   "prompt": "multiple nodules in the left mid zone",
+   "findings": [
+    {
+     "name": "Nodule",
+     "modifier": "",
+     "location": "left mid zone",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "88d3f2511e2b",
+   "img": "img/88d3f2511e2b.png",
+   "anat": "img/88d3f2511e2b_a.png",
+   "lesion": "img/88d3f2511e2b_l.png",
+   "prompt": "mild fibrosis in both lungs",
+   "findings": [
+    {
+     "name": "Fibrosis",
+     "modifier": "mild",
+     "location": "bilateral",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "8b62299fa328",
+   "img": "img/8b62299fa328.png",
+   "anat": "img/8b62299fa328_a.png",
+   "lesion": "img/8b62299fa328_l.png",
+   "prompt": "moderate bilateral pleural effusions",
+   "findings": [
+    {
+     "name": "Effusion",
+     "modifier": "moderate",
+     "location": "bilateral",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "8eae9c0e1059",
+   "img": "img/8eae9c0e1059.png",
+   "anat": "img/8eae9c0e1059_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "910d6041059d",
+   "img": "img/910d6041059d.png",
+   "anat": "img/910d6041059d_a.png",
+   "lesion": "img/910d6041059d_l.png",
+   "prompt": "lobar atelectasis in the right lower zone",
+   "findings": [
+    {
+     "name": "Atelectasis",
+     "modifier": "lobar",
+     "location": "right lower zone",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "932d9435d5ba",
+   "img": "img/932d9435d5ba.png",
+   "anat": "img/932d9435d5ba_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "94ec540b650e",
+   "img": "img/94ec540b650e.png",
+   "anat": "img/94ec540b650e_a.png",
+   "lesion": "img/94ec540b650e_l.png",
+   "prompt": "mass in the right lung",
+   "findings": [
+    {
+     "name": "Mass",
+     "modifier": "",
+     "location": "right",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "98085ce4b81d",
+   "img": "img/98085ce4b81d.png",
+   "anat": "img/98085ce4b81d_a.png",
+   "lesion": "img/98085ce4b81d_l.png",
+   "prompt": "large bilateral pleural effusions",
+   "findings": [
+    {
+     "name": "Effusion",
+     "modifier": "large",
+     "location": "bilateral",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "9c9f996ba317",
+   "img": "img/9c9f996ba317.png",
+   "anat": "img/9c9f996ba317_a.png",
+   "lesion": "img/9c9f996ba317_l.png",
+   "prompt": "severe fibrosis in both lungs",
+   "findings": [
+    {
+     "name": "Fibrosis",
+     "modifier": "severe",
+     "location": "bilateral",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "a1625b36ecb2",
+   "img": "img/a1625b36ecb2.png",
+   "anat": "img/a1625b36ecb2_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "a4aad42cf5e5",
+   "img": "img/a4aad42cf5e5.png",
+   "anat": "img/a4aad42cf5e5_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "a82864de6fe3",
+   "img": "img/a82864de6fe3.png",
+   "anat": "img/a82864de6fe3_a.png",
+   "lesion": "img/a82864de6fe3_l.png",
+   "prompt": "cardiomegaly",
+   "findings": [
+    {
+     "name": "Cardiomegaly",
+     "modifier": "",
+     "location": "",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "a8d460838ec5",
+   "img": "img/a8d460838ec5.png",
+   "anat": "img/a8d460838ec5_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "aa1cc09c3224",
+   "img": "img/aa1cc09c3224.png",
+   "anat": "img/aa1cc09c3224_a.png",
+   "lesion": "img/aa1cc09c3224_l.png",
+   "prompt": "mild consolidation in the right lung, small right apical pneumothorax",
+   "findings": [
+    {
+     "name": "Consolidation",
+     "modifier": "mild",
+     "location": "right",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Pneumothorax",
+     "modifier": "small",
+     "location": "right apical",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "ac4404f68395",
+   "img": "img/ac4404f68395.png",
+   "anat": "img/ac4404f68395_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "b3fa27312a79",
+   "img": "img/b3fa27312a79.png",
+   "anat": "img/b3fa27312a79_a.png",
+   "lesion": "img/b3fa27312a79_l.png",
+   "prompt": "mild fibrosis in the left lung",
+   "findings": [
+    {
+     "name": "Fibrosis",
+     "modifier": "mild",
+     "location": "left",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "b5707233ce54",
+   "img": "img/b5707233ce54.png",
+   "anat": "img/b5707233ce54_a.png",
+   "lesion": "img/b5707233ce54_l.png",
+   "prompt": "severe consolidation in both lungs, diffuse nodularity in both lungs",
+   "findings": [
+    {
+     "name": "Consolidation",
+     "modifier": "severe",
+     "location": "bilateral",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Diffuse Nodule",
+     "modifier": "",
+     "location": "bilateral",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "ba016f3fb475",
+   "img": "img/ba016f3fb475.png",
+   "anat": "img/ba016f3fb475_a.png",
+   "lesion": "img/ba016f3fb475_l.png",
+   "prompt": "cardiomegaly",
+   "findings": [
+    {
+     "name": "Cardiomegaly",
+     "modifier": "",
+     "location": "",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "bc77b0e404c6",
+   "img": "img/bc77b0e404c6.png",
+   "anat": "img/bc77b0e404c6_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "bd1a0e887e80",
+   "img": "img/bd1a0e887e80.png",
+   "anat": "img/bd1a0e887e80_a.png",
+   "lesion": "img/bd1a0e887e80_l.png",
+   "prompt": "multiple nodules in the right lung",
+   "findings": [
+    {
+     "name": "Nodule",
+     "modifier": "",
+     "location": "right",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "be854c1d2cc2",
+   "img": "img/be854c1d2cc2.png",
+   "anat": "img/be854c1d2cc2_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "bf92528a60d0",
+   "img": "img/bf92528a60d0.png",
+   "anat": "img/bf92528a60d0_a.png",
+   "lesion": "img/bf92528a60d0_l.png",
+   "prompt": "mass in the left lung, mild consolidation in the left lung",
+   "findings": [
+    {
+     "name": "Mass",
+     "modifier": "",
+     "location": "left",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Consolidation",
+     "modifier": "mild",
+     "location": "left",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "c383b01cb126",
+   "img": "img/c383b01cb126.png",
+   "anat": "img/c383b01cb126_a.png",
+   "lesion": "img/c383b01cb126_l.png",
+   "prompt": "multiple calcified foci in the left lung",
+   "findings": [
+    {
+     "name": "Calcification",
+     "modifier": "",
+     "location": "left",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "ccad665dce7a",
+   "img": "img/ccad665dce7a.png",
+   "anat": "img/ccad665dce7a_a.png",
+   "lesion": "img/ccad665dce7a_l.png",
+   "prompt": "moderate consolidation in both lungs",
+   "findings": [
+    {
+     "name": "Consolidation",
+     "modifier": "moderate",
+     "location": "bilateral",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "d0c98437de3d",
+   "img": "img/d0c98437de3d.png",
+   "anat": "img/d0c98437de3d_a.png",
+   "lesion": "img/d0c98437de3d_l.png",
+   "prompt": "linear atelectasis in the left lower zone",
+   "findings": [
+    {
+     "name": "Atelectasis",
+     "modifier": "linear",
+     "location": "left lower zone",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "d3ec66ea3650",
+   "img": "img/d3ec66ea3650.png",
+   "anat": "img/d3ec66ea3650_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "d86e93a4b37a",
+   "img": "img/d86e93a4b37a.png",
+   "anat": "img/d86e93a4b37a_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "ddba16c0d6f2",
+   "img": "img/ddba16c0d6f2.png",
+   "anat": "img/ddba16c0d6f2_a.png",
+   "lesion": "img/ddba16c0d6f2_l.png",
+   "prompt": "cardiomegaly",
+   "findings": [
+    {
+     "name": "Cardiomegaly",
+     "modifier": "",
+     "location": "",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "dea2ff25cc89",
+   "img": "img/dea2ff25cc89.png",
+   "anat": "img/dea2ff25cc89_a.png",
+   "lesion": "img/dea2ff25cc89_l.png",
+   "prompt": "emphysema in both lungs, severe fibrosis in both lungs",
+   "findings": [
+    {
+     "name": "Emphysema",
+     "modifier": "",
+     "location": "bilateral",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Fibrosis",
+     "modifier": "severe",
+     "location": "bilateral",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "e0df6e8609aa",
+   "img": "img/e0df6e8609aa.png",
+   "anat": "img/e0df6e8609aa_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "e1c14256d2f5",
+   "img": "img/e1c14256d2f5.png",
+   "anat": "img/e1c14256d2f5_a.png",
+   "lesion": "img/e1c14256d2f5_l.png",
+   "prompt": "severe consolidation in both lungs, diffuse nodularity in both lungs",
+   "findings": [
+    {
+     "name": "Consolidation",
+     "modifier": "severe",
+     "location": "bilateral",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Diffuse Nodule",
+     "modifier": "",
+     "location": "bilateral",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "e58db6b61091",
+   "img": "img/e58db6b61091.png",
+   "anat": "img/e58db6b61091_a.png",
+   "lesion": "img/e58db6b61091_l.png",
+   "prompt": "right basal pleural thickening, fracture of the left upper ribs",
+   "findings": [
+    {
+     "name": "Pleural Thickening",
+     "modifier": "",
+     "location": "right basal",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Fracture",
+     "modifier": "",
+     "location": "left upper ribs",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "e803e46a0e44",
+   "img": "img/e803e46a0e44.png",
+   "anat": "img/e803e46a0e44_a.png",
+   "lesion": "img/e803e46a0e44_l.png",
+   "prompt": "nodule in the left lower zone",
+   "findings": [
+    {
+     "name": "Nodule",
+     "modifier": "",
+     "location": "left lower zone",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "eb3884c0e36c",
+   "img": "img/eb3884c0e36c.png",
+   "anat": "img/eb3884c0e36c_a.png",
+   "lesion": "img/eb3884c0e36c_l.png",
+   "prompt": "right basal pleural thickening",
+   "findings": [
+    {
+     "name": "Pleural Thickening",
+     "modifier": "",
+     "location": "right basal",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "ece728f88f68",
+   "img": "img/ece728f88f68.png",
+   "anat": "img/ece728f88f68_a.png",
+   "lesion": "img/ece728f88f68_l.png",
+   "prompt": "small right apical pneumothorax",
+   "findings": [
+    {
+     "name": "Pneumothorax",
+     "modifier": "small",
+     "location": "right apical",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "ed1857044680",
+   "img": "img/ed1857044680.png",
+   "anat": "img/ed1857044680_a.png",
+   "lesion": "img/ed1857044680_l.png",
+   "prompt": "nodule in the right lung",
+   "findings": [
+    {
+     "name": "Nodule",
+     "modifier": "",
+     "location": "right",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "f4e51ce2bb3c",
+   "img": "img/f4e51ce2bb3c.png",
+   "anat": "img/f4e51ce2bb3c_a.png",
+   "lesion": "img/f4e51ce2bb3c_l.png",
+   "prompt": "moderate left basal pleural effusion, small left apical pneumothorax",
+   "findings": [
+    {
+     "name": "Effusion",
+     "modifier": "moderate",
+     "location": "left basal",
+     "color": "#ff7828"
+    },
+    {
+     "name": "Pneumothorax",
+     "modifier": "small",
+     "location": "left apical",
+     "color": "#3ce6ff"
+    }
+   ]
+  },
+  {
+   "uid": "fac849d8f883",
+   "img": "img/fac849d8f883.png",
+   "anat": "img/fac849d8f883_a.png",
+   "lesion": "img/fac849d8f883_l.png",
+   "prompt": "mild fibrosis in the left mid zone",
+   "findings": [
+    {
+     "name": "Fibrosis",
+     "modifier": "mild",
+     "location": "left mid zone",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "fb8e954696fb",
+   "img": "img/fb8e954696fb.png",
+   "anat": "img/fb8e954696fb_a.png",
+   "lesion": "img/fb8e954696fb_l.png",
+   "prompt": "right lateral pleural thickening",
+   "findings": [
+    {
+     "name": "Pleural Thickening",
+     "modifier": "",
+     "location": "right lateral",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "fd3b117b80b3",
+   "img": "img/fd3b117b80b3.png",
+   "anat": "img/fd3b117b80b3_a.png",
+   "lesion": "img/fd3b117b80b3_l.png",
+   "prompt": "mass in the right lung",
+   "findings": [
+    {
+     "name": "Mass",
+     "modifier": "",
+     "location": "right",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "fd6b378446a0",
+   "img": "img/fd6b378446a0.png",
+   "anat": "img/fd6b378446a0_a.png",
+   "lesion": "",
+   "prompt": "no abnormality described (normal)",
+   "findings": []
+  },
+  {
+   "uid": "fdb795758ac8",
+   "img": "img/fdb795758ac8.png",
+   "anat": "img/fdb795758ac8_a.png",
+   "lesion": "img/fdb795758ac8_l.png",
+   "prompt": "emphysema in both lungs",
+   "findings": [
+    {
+     "name": "Emphysema",
+     "modifier": "",
+     "location": "bilateral",
+     "color": "#ff7828"
+    }
+   ]
+  },
+  {
+   "uid": "feae12a38c87",
+   "img": "img/feae12a38c87.png",
+   "anat": "img/feae12a38c87_a.png",
+   "lesion": "img/feae12a38c87_l.png",
+   "prompt": "linear atelectasis in the left lower zone",
+   "findings": [
+    {
+     "name": "Atelectasis",
+     "modifier": "linear",
+     "location": "left lower zone",
+     "color": "#ff7828"
+    }
+   ]
+  }
+ ]
+}
